@@ -7,22 +7,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
             --bg-primary: #070b12;
             --bg-card: rgba(16, 28, 44, 0.85);
             --border-glow: rgba(74, 180, 220, 0.3);
             --text-primary: #eaf4fc;
             --text-secondary: #8ab4d0;
+            --text-muted: #4a6f7f;
             --accent-cyan: #4ab8dc;
             --accent-gold: #f5c97a;
-            --gradient-1: linear-gradient(135deg, #0f1f2e, #1a3348);
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
             --shadow-card: 0 25px 60px -15px rgba(0,0,0,0.9), 0 0 0 1px rgba(74, 180, 220, 0.12) inset;
+            --gradient-card: linear-gradient(135deg, #0f1f2e, #1a3348);
+            --transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f0f6fa;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --text-primary: #1a2a3a;
+            --text-secondary: #3a5a6a;
+            --text-muted: #6a8a9a;
+            --shadow-card: 0 25px 60px -15px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05) inset;
+            --gradient-card: linear-gradient(135deg, #e8f0f5, #d5e5ef);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -31,61 +45,60 @@
             font-family: 'Inter', sans-serif;
             color: var(--text-primary);
             padding: 20px;
+            transition: var(--transition);
             background-image: 
                 radial-gradient(ellipse at 20% 50%, rgba(74, 180, 220, 0.06) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 20%, rgba(245, 201, 122, 0.04) 0%, transparent 50%);
         }
 
         .container {
-            max-width: 1240px;
+            max-width: 1440px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 28px;
+            gap: 24px;
         }
 
-        /* Glassmorphism карточки */
+        /* Glassmorphism */
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-radius: 36px;
-            padding: 34px 38px;
-            border: 1px solid rgba(74, 180, 220, 0.15);
+            border-radius: 32px;
+            padding: 28px 32px;
+            border: 1px solid rgba(74, 180, 220, 0.12);
             box-shadow: var(--shadow-card);
-            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: var(--transition);
         }
 
         .card:hover {
-            border-color: rgba(74, 180, 220, 0.3);
-            box-shadow: 0 30px 70px -20px rgba(74, 180, 220, 0.15), 0 0 0 1px rgba(74, 180, 220, 0.2) inset;
+            border-color: rgba(74, 180, 220, 0.25);
         }
 
         .card.hidden {
             display: none;
         }
 
-        /* Хедер */
+        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(74, 180, 220, 0.1);
-            padding-bottom: 20px;
-            margin-bottom: 28px;
+            border-bottom: 1px solid rgba(74, 180, 220, 0.08);
+            padding-bottom: 18px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
             gap: 14px;
         }
 
         .title {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 800;
-            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             gap: 14px;
-            background: linear-gradient(135deg, #eaf4fc, #8ab4d0);
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -93,73 +106,137 @@
 
         .title i {
             -webkit-text-fill-color: var(--accent-gold);
-            font-size: 30px;
-            filter: drop-shadow(0 0 12px rgba(245, 201, 122, 0.3));
+            font-size: 28px;
+            filter: drop-shadow(0 0 12px rgba(245, 201, 122, 0.2));
         }
 
         .title .badge {
-            background: rgba(74, 180, 220, 0.15);
-            padding: 4px 18px;
+            background: rgba(74, 180, 220, 0.12);
+            padding: 4px 16px;
             border-radius: 60px;
-            font-size: 13px;
+            font-size: 12px;
             color: var(--accent-cyan);
-            border: 1px solid rgba(74, 180, 220, 0.2);
+            border: 1px solid rgba(74, 180, 220, 0.15);
             -webkit-text-fill-color: var(--accent-cyan);
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
+        /* Theme toggle */
+        .theme-toggle {
+            background: rgba(74, 180, 220, 0.08);
+            border: 1px solid rgba(74, 180, 220, 0.12);
+            border-radius: 60px;
+            padding: 8px 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 16px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(74, 180, 220, 0.15);
+            border-color: var(--accent-cyan);
+        }
+
+        /* Status tag */
         .status-tag {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 22px;
+            padding: 8px 20px;
             border-radius: 60px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
-            background: rgba(16, 28, 44, 0.8);
-            border: 1px solid rgba(74, 180, 220, 0.2);
-            transition: all 0.3s;
+            background: rgba(16, 28, 44, 0.6);
+            border: 1px solid rgba(74, 180, 220, 0.15);
+            transition: var(--transition);
         }
 
-        .status-tag i {
-            font-size: 16px;
+        .faction-mo { border-color: #2ecc71; color: #2ecc71; background: rgba(46, 204, 113, 0.06); }
+        .faction-mvd { border-color: #e74c3c; color: #e74c3c; background: rgba(231, 76, 60, 0.06); }
+        .faction-sk { border-color: #3498db; color: #3498db; background: rgba(52, 152, 219, 0.06); }
+        .faction-gov { border-color: #f1c40f; color: #f1c40f; background: rgba(241, 196, 15, 0.06); }
+        .faction-proc { border-color: #9b59b6; color: #9b59b6; background: rgba(155, 89, 182, 0.06); }
+        .faction-hosp { border-color: #1abc9c; color: #1abc9c; background: rgba(26, 188, 156, 0.06); }
+        .faction-law { border-color: #e67e22; color: #e67e22; background: rgba(230, 126, 34, 0.06); }
+        .faction-mchs { border-color: #f39c12; color: #f39c12; background: rgba(243, 156, 18, 0.06); }
+        .faction-fsin { border-color: #95a5a6; color: #95a5a6; background: rgba(149, 165, 166, 0.06); }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(74, 180, 220, 0.06);
+            padding-bottom: 4px;
         }
 
-        .faction-mo { border-color: #2ecc71; color: #2ecc71; background: rgba(46, 204, 113, 0.08); }
-        .faction-mvd { border-color: #e74c3c; color: #e74c3c; background: rgba(231, 76, 60, 0.08); }
-        .faction-sk { border-color: #3498db; color: #3498db; background: rgba(52, 152, 219, 0.08); }
-        .faction-gov { border-color: #f1c40f; color: #f1c40f; background: rgba(241, 196, 15, 0.08); }
-        .faction-proc { border-color: #9b59b6; color: #9b59b6; background: rgba(155, 89, 182, 0.08); }
-        .faction-hosp { border-color: #1abc9c; color: #1abc9c; background: rgba(26, 188, 156, 0.08); }
-        .faction-law { border-color: #e67e22; color: #e67e22; background: rgba(230, 126, 34, 0.08); }
-        .faction-mchs { border-color: #f39c12; color: #f39c12; background: rgba(243, 156, 18, 0.08); }
-        .faction-fsin { border-color: #95a5a6; color: #95a5a6; background: rgba(149, 165, 166, 0.08); }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 10px 24px;
+            border-radius: 60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-        /* Стили полей */
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(74, 180, 220, 0.04);
+        }
+
+        .tab-btn.active {
+            background: rgba(74, 180, 220, 0.08);
+            color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(74, 180, 220, 0.04);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.35s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Fields */
         .fields-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 18px 28px;
+            gap: 16px 24px;
         }
 
         @media (max-width: 768px) {
             .fields-grid { grid-template-columns: 1fr; }
-            .card { padding: 24px 18px; }
+            .card { padding: 20px 16px; }
         }
 
         .field {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .field.full { grid-column: 1 / -1; }
@@ -168,7 +245,7 @@
             color: var(--text-secondary);
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
             font-family: 'JetBrains Mono', monospace;
             display: flex;
@@ -177,135 +254,121 @@
         }
 
         .field-label .required {
-            color: #f28b82;
+            color: var(--accent-red);
             font-size: 14px;
         }
 
         .field-control {
-            background: rgba(7, 11, 18, 0.7);
-            border: 1px solid rgba(74, 180, 220, 0.15);
-            border-radius: 16px;
-            padding: 13px 18px;
+            background: rgba(7, 11, 18, 0.5);
+            border: 1px solid rgba(74, 180, 220, 0.1);
+            border-radius: 14px;
+            padding: 12px 16px;
             color: var(--text-primary);
-            font-size: 15px;
+            font-size: 14px;
             font-family: 'Inter', sans-serif;
             outline: none;
-            transition: all 0.3s;
+            transition: var(--transition);
             width: 100%;
             appearance: none;
         }
 
+        [data-theme="light"] .field-control {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
         .field-control:focus {
             border-color: var(--accent-cyan);
-            box-shadow: 0 0 0 4px rgba(74, 180, 220, 0.1), 0 0 30px rgba(74, 180, 220, 0.05);
-            background: rgba(7, 11, 18, 0.9);
+            box-shadow: 0 0 0 4px rgba(74, 180, 220, 0.08);
         }
 
         .field-control.error {
-            border-color: #e74c3c;
-            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.12);
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
         }
 
         select.field-control {
             cursor: pointer;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath d='M1 2l6 6 6-6' stroke='%238ab4d0' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 18px center;
-            padding-right: 44px;
-        }
-
-        select.field-control option {
-            background: #0a141f;
-            color: var(--text-primary);
+            background-position: right 16px center;
+            padding-right: 40px;
         }
 
         textarea.field-control {
             resize: vertical;
-            min-height: 130px;
+            min-height: 120px;
             line-height: 1.7;
-            font-family: 'Inter', sans-serif;
         }
 
-        .field-control:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Чекбоксы — премиум */
+        /* Checkboxes */
         .checkbox-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px 12px;
-            padding-top: 2px;
+            gap: 6px 10px;
         }
 
         .checkbox-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: #c8dce8;
-            font-size: 14px;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            background: rgba(7, 11, 18, 0.5);
-            padding: 8px 20px 8px 16px;
+            background: rgba(7, 11, 18, 0.3);
+            padding: 6px 16px 6px 12px;
             border-radius: 60px;
-            border: 1px solid rgba(74, 180, 220, 0.1);
-            transition: all 0.3s;
-            user-select: none;
+            border: 1px solid rgba(74, 180, 220, 0.06);
+            transition: var(--transition);
         }
 
         .checkbox-item:hover {
-            border-color: rgba(74, 180, 220, 0.3);
-            background: rgba(7, 11, 18, 0.8);
-            transform: translateY(-1px);
+            border-color: rgba(74, 180, 220, 0.2);
         }
 
         .checkbox-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             accent-color: var(--accent-cyan);
             cursor: pointer;
-            filter: drop-shadow(0 0 4px rgba(74, 180, 220, 0.2));
         }
 
         .checkbox-item.checked {
             border-color: var(--accent-cyan);
-            background: rgba(74, 180, 220, 0.08);
-            box-shadow: 0 0 20px rgba(74, 180, 220, 0.05);
+            background: rgba(74, 180, 220, 0.06);
         }
 
         .error-message {
-            color: #f28b82;
+            color: var(--accent-red);
             font-size: 12px;
             font-family: 'JetBrains Mono', monospace;
-            min-height: 22px;
+            min-height: 20px;
             padding-top: 4px;
         }
 
-        /* Кнопки — дизайн с glow */
+        /* Buttons */
         .btn-group {
             display: flex;
-            gap: 16px;
-            margin-top: 26px;
+            gap: 14px;
+            margin-top: 22px;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 15px 36px;
+            padding: 14px 32px;
             border-radius: 60px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: var(--transition);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             flex: 1;
-            min-width: 150px;
+            min-width: 140px;
             text-transform: uppercase;
             border: none;
             position: relative;
@@ -318,7 +381,7 @@
             inset: 0;
             border-radius: 60px;
             padding: 1px;
-            background: linear-gradient(135deg, rgba(74, 180, 220, 0.3), rgba(245, 201, 122, 0.1));
+            background: linear-gradient(135deg, rgba(74, 180, 220, 0.2), rgba(245, 201, 122, 0.05));
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -326,8 +389,8 @@
         }
 
         .btn:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 40px -10px rgba(74, 180, 220, 0.25);
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 12px 40px -10px rgba(74, 180, 220, 0.15);
         }
 
         .btn:active:not(:disabled) {
@@ -343,87 +406,57 @@
         .btn-primary {
             background: linear-gradient(135deg, #1a3a50, #0f2838);
             color: var(--text-primary);
-            border: 1px solid rgba(74, 180, 220, 0.2);
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            background: linear-gradient(135deg, #234a60, #1a3348);
-            border-color: var(--accent-cyan);
+            border: 1px solid rgba(74, 180, 220, 0.15);
         }
 
         .btn-publish {
             background: linear-gradient(135deg, #1a4a3a, #0f2f25);
             color: #8dd4b0;
-            border: 1px solid rgba(46, 204, 113, 0.2);
+            border: 1px solid rgba(46, 204, 113, 0.15);
         }
 
         .btn-publish:hover:not(:disabled) {
-            background: linear-gradient(135deg, #1f5a45, #153a2e);
-            border-color: #2ecc71;
-            box-shadow: 0 15px 40px -10px rgba(46, 204, 113, 0.2);
+            border-color: var(--accent-green);
+            box-shadow: 0 12px 40px -10px rgba(46, 204, 113, 0.15);
         }
 
         .btn-secondary {
-            background: rgba(16, 28, 44, 0.6);
+            background: rgba(16, 28, 44, 0.5);
             color: var(--text-secondary);
-            border: 1px solid rgba(74, 180, 220, 0.08);
-            flex: 0.7;
+            border: 1px solid rgba(74, 180, 220, 0.06);
+            flex: 0.6;
         }
 
         .btn-secondary:hover:not(:disabled) {
-            background: rgba(16, 28, 44, 0.9);
-            border-color: rgba(74, 180, 220, 0.2);
-        }
-
-        .btn-login {
-            background: linear-gradient(135deg, #1a3a4a, #0f2838);
-            color: #8dc8d8;
-            border: 1px solid rgba(74, 180, 220, 0.15);
-        }
-
-        .btn-login:hover:not(:disabled) {
-            background: linear-gradient(135deg, #1f4a5a, #153a48);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 15px 40px -10px rgba(74, 180, 220, 0.2);
-        }
-
-        .btn-small {
-            padding: 8px 20px;
-            font-size: 13px;
-            flex: 0 1 auto;
-            min-width: auto;
-            gap: 8px;
+            background: rgba(16, 28, 44, 0.8);
+            border-color: rgba(74, 180, 220, 0.15);
         }
 
         .btn-success {
             background: linear-gradient(135deg, #1a3a2a, #0f2a1a);
-            color: #6fd6b8;
-            border: 1px solid rgba(46, 204, 113, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(46, 204, 113, 0.1);
         }
 
         .btn-success:hover:not(:disabled) {
-            background: linear-gradient(135deg, #1f4a35, #153a22);
-            border-color: #2ecc71;
+            border-color: var(--accent-green);
         }
 
-        .btn-danger {
-            background: linear-gradient(135deg, #3a1a1a, #2a0f0f);
-            color: #f28b82;
-            border: 1px solid rgba(231, 76, 60, 0.15);
+        .btn-small {
+            padding: 8px 18px;
+            font-size: 12px;
+            flex: 0 1 auto;
+            min-width: auto;
+            gap: 6px;
         }
 
-        .btn-danger:hover:not(:disabled) {
-            background: linear-gradient(135deg, #4a2222, #3a1818);
-            border-color: #e74c3c;
-        }
-
-        /* Webhook статус */
+        /* Webhook */
         .webhook-section {
-            background: rgba(7, 11, 18, 0.5);
-            border: 1px solid rgba(74, 180, 220, 0.08);
-            border-radius: 18px;
-            padding: 18px 24px;
-            margin-top: 20px;
+            background: rgba(7, 11, 18, 0.3);
+            border: 1px solid rgba(74, 180, 220, 0.06);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-top: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -434,559 +467,680 @@
         .webhook-status {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
         }
 
         .webhook-status .status {
-            padding: 4px 18px;
+            padding: 4px 16px;
             border-radius: 60px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
         }
 
         .status-ready {
-            color: #6fd6b8;
-            border: 1px solid rgba(46, 204, 113, 0.3);
-            background: rgba(46, 204, 113, 0.08);
+            color: var(--accent-green);
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            background: rgba(46, 204, 113, 0.06);
         }
         .status-waiting {
-            color: #f5c97a;
-            border: 1px solid rgba(245, 201, 122, 0.2);
-            background: rgba(245, 201, 122, 0.05);
+            color: var(--accent-gold);
+            border: 1px solid rgba(245, 201, 122, 0.15);
+            background: rgba(245, 201, 122, 0.04);
         }
 
-        /* Вкладки */
-        .tabs {
+        /* ========== ЛОГИН С КРАСИВЫМ СПИСКОМ ========== */
+        .faction-grid-login {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .faction-item-login {
             display: flex;
-            gap: 6px;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-            border-bottom: 1px solid rgba(74, 180, 220, 0.06);
-            padding-bottom: 4px;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            background: rgba(7, 11, 18, 0.3);
+            border: 1px solid rgba(74, 180, 220, 0.06);
+            transition: var(--transition);
+            cursor: pointer;
         }
 
-        .tab-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            padding: 10px 28px;
-            border-radius: 60px;
-            font-family: 'JetBrains Mono', monospace;
+        .faction-item-login:hover {
+            border-color: rgba(74, 180, 220, 0.2);
+            background: rgba(7, 11, 18, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .faction-item-login.selected {
+            border-color: var(--accent-cyan);
+            background: rgba(74, 180, 220, 0.06);
+            box-shadow: 0 0 20px rgba(74, 180, 220, 0.05);
+        }
+
+        .faction-item-login .faction-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .faction-item-login .faction-info {
+            flex: 1;
+        }
+
+        .faction-item-login .faction-name {
+            font-weight: 700;
             font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .faction-item-login .faction-short {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .faction-item-login .faction-pass {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0.5;
+        }
+
+        /* ========== АНАЛИТИКА ========== */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: rgba(7, 11, 18, 0.3);
+            border: 1px solid rgba(74, 180, 220, 0.06);
+            border-radius: 16px;
+            padding: 16px 18px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: rgba(74, 180, 220, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 11px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        /* Charts */
+        .chart-container {
+            background: rgba(7, 11, 18, 0.2);
+            border: 1px solid rgba(74, 180, 220, 0.06);
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+        }
+
+        .chart-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .tab-btn:hover {
-            color: var(--text-primary);
-            background: rgba(74, 180, 220, 0.05);
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            height: 140px;
+            padding-top: 8px;
+            overflow-x: auto;
         }
 
-        .tab-btn.active {
+        .chart-bar-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 30px;
+        }
+
+        .chart-bar {
+            width: 24px;
+            border-radius: 6px 6px 0 0;
+            background: linear-gradient(180deg, var(--accent-cyan), rgba(74, 180, 220, 0.3));
+            transition: var(--transition);
+            min-height: 4px;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.02);
+            transform-origin: bottom;
+        }
+
+        .chart-bar-label {
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .chart-bar-value {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+
+        /* Activity table */
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .activity-table th {
+            text-align: left;
+            padding: 8px 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(74, 180, 220, 0.06);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .activity-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(74, 180, 220, 0.04);
+        }
+
+        .activity-table tr:hover td {
+            background: rgba(74, 180, 220, 0.02);
+        }
+
+        .user-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
+            color: #fff;
+            margin-right: 8px;
+        }
+
+        .progress-bar {
+            height: 5px;
+            border-radius: 10px;
             background: rgba(74, 180, 220, 0.08);
-            color: var(--accent-cyan);
-            box-shadow: 0 0 20px rgba(74, 180, 220, 0.05);
+            overflow: hidden;
+            width: 100px;
+            display: inline-block;
         }
 
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.35s ease;
+        .progress-bar .fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-gold));
+            transition: width 0.6s ease;
         }
 
-        .tab-content.active {
-            display: block;
+        /* ========== ШАБЛОНЫ ========== */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 14px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Настройки списки */
-        .list-settings {
-            background: rgba(7, 11, 18, 0.4);
+        .template-card {
+            background: rgba(7, 11, 18, 0.3);
             border: 1px solid rgba(74, 180, 220, 0.06);
-            border-radius: 18px;
-            padding: 20px 24px;
-            margin-bottom: 14px;
+            border-radius: 16px;
+            padding: 16px 18px;
+            transition: var(--transition);
+            cursor: pointer;
         }
 
-        .list-settings:last-child { margin-bottom: 0; }
+        .template-card:hover {
+            border-color: rgba(74, 180, 220, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .template-card .template-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text-primary);
+        }
+
+        .template-card .template-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .template-card .template-meta .tag {
+            padding: 2px 10px;
+            border-radius: 60px;
+            background: rgba(74, 180, 220, 0.06);
+            border: 1px solid rgba(74, 180, 220, 0.06);
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .template-badge-public {
+            color: var(--accent-cyan);
+            border-color: rgba(74, 180, 220, 0.15);
+        }
+        .template-badge-private {
+            color: var(--accent-gold);
+            border-color: rgba(245, 201, 122, 0.15);
+        }
+
+        .template-card .template-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .template-card .template-actions .btn {
+            padding: 5px 12px;
+            font-size: 10px;
+            flex: 0 1 auto;
+            min-width: auto;
+        }
+
+        /* ========== СТИЛИ ДЛЯ ПРЕДПРОСМОТРА ========== */
+        .discord-msg {
+            border-radius: 16px;
+            padding: 18px 22px;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+        }
+
+        /* Стиль 1: CLASSIC — минималистичный, строгий */
+        .discord-msg.style-classic {
+            background: rgba(15, 26, 36, 0.7);
+            border-left: 4px solid var(--accent-cyan);
+        }
+        .discord-msg.style-classic .msg-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .discord-msg.style-classic .msg-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; font-weight: 800; color: #fff; flex-shrink: 0;
+        }
+        .discord-msg.style-classic .msg-author { font-weight: 700; font-size: 15px; color: var(--text-primary); }
+        .discord-msg.style-classic .msg-author .badge {
+            background: rgba(74, 180, 220, 0.08); padding: 2px 12px; border-radius: 60px;
+            font-size: 11px; font-weight: 400; color: var(--text-secondary); margin-left: 8px;
+        }
+        .discord-msg.style-classic .msg-timestamp { color: var(--text-muted); font-size: 12px; }
+        .discord-msg.style-classic .msg-content { padding-left: 48px; color: var(--text-primary); line-height: 1.8; }
+        .discord-msg.style-classic .msg-content .doc-title {
+            font-size: 17px; font-weight: 800; color: var(--accent-gold);
+            display: block; margin-bottom: 6px;
+        }
+        .discord-msg.style-classic .msg-content .text-block {
+            background: rgba(7, 11, 18, 0.4); border-radius: 12px; padding: 12px 16px;
+            font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-secondary);
+            border-left: 3px solid var(--accent-cyan); white-space: pre-wrap; word-break: break-word;
+        }
+        .discord-msg.style-classic .msg-footer { color: var(--text-muted); font-size: 12px; padding-left: 48px; margin-top: 6px; }
+
+        /* Стиль 2: GRADIENT — цветной, с градиентами */
+        .discord-msg.style-gradient {
+            background: linear-gradient(145deg, rgba(26, 58, 80, 0.8), rgba(15, 40, 56, 0.6));
+            border: 1px solid rgba(74, 180, 220, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .discord-msg.style-gradient .msg-header {
+            display: flex; align-items: center; gap: 14px; margin-bottom: 12px; flex-wrap: wrap;
+            padding-bottom: 10px; border-bottom: 1px solid rgba(74, 180, 220, 0.08);
+        }
+        .discord-msg.style-gradient .msg-avatar {
+            width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 800; color: #fff; flex-shrink: 0;
+            background: linear-gradient(135deg, #4ab8dc, #2a7a9a);
+            box-shadow: 0 4px 15px rgba(74, 180, 220, 0.2);
+        }
+        .discord-msg.style-gradient .msg-author { font-weight: 700; font-size: 16px; color: var(--text-primary); }
+        .discord-msg.style-gradient .msg-author .badge {
+            background: rgba(74, 180, 220, 0.1); padding: 2px 14px; border-radius: 60px;
+            font-size: 11px; font-weight: 400; color: var(--accent-cyan); margin-left: 8px;
+            border: 1px solid rgba(74, 180, 220, 0.1);
+        }
+        .discord-msg.style-gradient .msg-timestamp { color: var(--text-muted); font-size: 12px; margin-left: auto; }
+        .discord-msg.style-gradient .msg-content { padding-left: 58px; color: var(--text-primary); line-height: 1.8; }
+        .discord-msg.style-gradient .msg-content .doc-title {
+            font-size: 20px; font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-gold), #f5a97a);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            display: block; margin-bottom: 8px;
+        }
+        .discord-msg.style-gradient .msg-content .text-block {
+            background: rgba(7, 11, 18, 0.4); border-radius: 14px; padding: 14px 18px;
+            font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-secondary);
+            border: 1px solid rgba(74, 180, 220, 0.06); white-space: pre-wrap; word-break: break-word;
+        }
+        .discord-msg.style-gradient .msg-footer { color: var(--text-muted); font-size: 12px; padding-left: 58px; margin-top: 8px; opacity: 0.7; }
+
+        /* Стиль 3: NEON — яркий, с неоновым свечением */
+        .discord-msg.style-neon {
+            background: rgba(10, 18, 28, 0.85);
+            border: 1px solid rgba(74, 180, 220, 0.25);
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(74, 180, 220, 0.06), inset 0 0 60px rgba(74, 180, 220, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .discord-msg.style-neon::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(74, 180, 220, 0.05), transparent 60%);
+            pointer-events: none;
+        }
+        .discord-msg.style-neon .msg-header {
+            display: flex; align-items: center; gap: 14px; margin-bottom: 12px; flex-wrap: wrap;
+            position: relative; z-index: 1;
+        }
+        .discord-msg.style-neon .msg-avatar {
+            width: 48px; height: 48px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: 800; color: #fff; flex-shrink: 0;
+            background: linear-gradient(135deg, #4ab8dc, #1a5a7a);
+            box-shadow: 0 0 30px rgba(74, 180, 220, 0.3), 0 0 60px rgba(74, 180, 220, 0.1);
+        }
+        .discord-msg.style-neon .msg-author {
+            font-weight: 800; font-size: 17px; color: var(--text-primary);
+            letter-spacing: 0.3px; text-shadow: 0 0 20px rgba(74, 180, 220, 0.05);
+        }
+        .discord-msg.style-neon .msg-author .badge {
+            background: rgba(74, 180, 220, 0.08); padding: 2px 16px; border-radius: 60px;
+            font-size: 11px; font-weight: 600; color: var(--accent-cyan); margin-left: 10px;
+            border: 1px solid rgba(74, 180, 220, 0.15);
+            text-shadow: 0 0 10px rgba(74, 180, 220, 0.1);
+        }
+        .discord-msg.style-neon .msg-timestamp {
+            color: var(--text-muted); font-size: 12px; margin-left: auto;
+            text-shadow: 0 0 10px rgba(74, 180, 220, 0.05);
+        }
+        .discord-msg.style-neon .msg-content {
+            padding-left: 62px; color: var(--text-primary); line-height: 1.8;
+            position: relative; z-index: 1;
+        }
+        .discord-msg.style-neon .msg-content .doc-title {
+            font-size: 22px; font-weight: 900; color: var(--accent-gold);
+            display: block; margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(245, 201, 122, 0.15), 0 0 60px rgba(245, 201, 122, 0.05);
+        }
+        .discord-msg.style-neon .msg-content .field-line {
+            display: block; font-size: 14px; padding: 2px 0;
+        }
+        .discord-msg.style-neon .msg-content .field-label {
+            color: var(--text-secondary); font-weight: 500; opacity: 0.7;
+        }
+        .discord-msg.style-neon .msg-content .text-block {
+            background: rgba(7, 11, 18, 0.5); border-radius: 16px; padding: 16px 20px;
+            font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #c8dce8;
+            border-left: 4px solid var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(74, 180, 220, 0.04);
+            white-space: pre-wrap; word-break: break-word;
+            margin-top: 6px;
+        }
+        .discord-msg.style-neon .msg-footer {
+            color: var(--text-muted); font-size: 12px; padding-left: 62px; margin-top: 8px;
+            opacity: 0.5; position: relative; z-index: 1;
+            text-shadow: 0 0 10px rgba(74, 180, 220, 0.05);
+        }
+
+        /* ========== AI Assistant ========== */
+        .ai-assistant {
+            background: rgba(74, 180, 220, 0.04);
+            border: 1px solid rgba(74, 180, 220, 0.08);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-top: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .ai-assistant .ai-icon {
+            font-size: 22px;
+            color: var(--accent-gold);
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .ai-assistant .ai-content {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .ai-assistant .ai-content textarea {
+            width: 100%;
+            background: rgba(7, 11, 18, 0.3);
+            border: 1px solid rgba(74, 180, 220, 0.06);
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 50px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .ai-assistant .ai-content textarea:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .ai-assistant .ai-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        /* Login message */
+        .login-message {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            min-height: 28px;
+            text-align: center;
+            padding-top: 10px;
+        }
+        .login-message.error { color: var(--accent-red); }
+        .login-message.success { color: var(--accent-green); }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(74, 180, 220, 0.12);
+            color: var(--text-primary);
+            padding: 14px 36px;
+            border-radius: 60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+            z-index: 999;
+            max-width: 94%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.error { border-color: rgba(231, 76, 60, 0.2); }
+        .toast.success { border-color: rgba(46, 204, 113, 0.15); }
+
+        /* Списки настроек */
+        .list-settings {
+            background: rgba(7, 11, 18, 0.2);
+            border: 1px solid rgba(74, 180, 220, 0.04);
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+        }
 
         .list-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 14px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 10px;
         }
 
         .list-title {
             color: var(--text-secondary);
             font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .list-controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
             flex-wrap: wrap;
         }
 
         .list-controls input {
-            background: rgba(7, 11, 18, 0.6);
-            border: 1px solid rgba(74, 180, 220, 0.1);
-            border-radius: 12px;
-            padding: 8px 16px;
+            background: rgba(7, 11, 18, 0.4);
+            border: 1px solid rgba(74, 180, 220, 0.06);
+            border-radius: 10px;
+            padding: 8px 14px;
             color: var(--text-primary);
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
-            width: 200px;
+            width: 160px;
             max-width: 100%;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
 
         .list-controls input:focus {
             border-color: var(--accent-cyan);
-            box-shadow: 0 0 0 3px rgba(74, 180, 220, 0.05);
         }
 
         .list-items {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 6px;
+            margin-top: 6px;
         }
 
         .list-item-tag {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(7, 11, 18, 0.6);
-            border: 1px solid rgba(74, 180, 220, 0.08);
+            gap: 8px;
+            background: rgba(7, 11, 18, 0.3);
+            border: 1px solid rgba(74, 180, 220, 0.06);
             border-radius: 60px;
-            padding: 5px 14px 5px 20px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #c8dce8;
-            transition: all 0.3s;
-        }
-
-        .list-item-tag:hover {
-            border-color: rgba(74, 180, 220, 0.2);
+            padding: 4px 12px 4px 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
         }
 
         .list-item-tag .remove-btn {
             background: none;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             padding: 0 4px;
-            transition: all 0.3s;
-            opacity: 0.5;
+            transition: var(--transition);
         }
 
         .list-item-tag .remove-btn:hover {
-            color: #f28b82;
-            opacity: 1;
-            transform: scale(1.1);
+            color: var(--accent-red);
         }
 
         .empty-text {
-            color: #3a5a6a;
-            font-size: 14px;
+            color: var(--text-muted);
+            font-size: 13px;
             font-style: italic;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        /* ---------- СТИЛИ ДЛЯ ПРЕДПРОСМОТРА (вариации) ---------- */
-        .preview-card {
-            background: rgba(7, 11, 18, 0.5);
-            border: 1px solid rgba(74, 180, 220, 0.06);
-            border-radius: 22px;
-            padding: 24px 28px;
-            margin-top: 8px;
+        .field-with-settings {
+            border-bottom: 1px solid rgba(74, 180, 220, 0.04);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+        .field-with-settings:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
 
-        .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            border-bottom: 1px solid rgba(74, 180, 220, 0.06);
-            padding-bottom: 14px;
-            margin-bottom: 18px;
-        }
-
-        .preview-title {
-            color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .style-selector {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .style-btn {
-            padding: 6px 16px;
-            border-radius: 60px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid rgba(74, 180, 220, 0.1);
-            background: rgba(7, 11, 18, 0.4);
-            color: var(--text-secondary);
-        }
-
-        .style-btn:hover {
-            border-color: var(--accent-cyan);
-            color: var(--text-primary);
-        }
-
-        .style-btn.active {
-            background: rgba(74, 180, 220, 0.08);
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-        }
-
-        /* === ВАРИАЦИИ СООБЩЕНИЙ === */
-        .discord-msg {
-            border-radius: 16px;
-            padding: 20px 24px;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.4s;
-        }
-
-        /* Стиль 1: Классический */
-        .discord-msg.style-classic {
-            background: #0f1a24;
-            border-left: 4px solid var(--accent-cyan);
-        }
-        .discord-msg.style-classic .msg-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-        .discord-msg.style-classic .msg-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 800;
-            color: #fff;
-            flex-shrink: 0;
-        }
-        .discord-msg.style-classic .msg-author {
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--text-primary);
-        }
-        .discord-msg.style-classic .msg-author .badge {
-            background: rgba(74, 180, 220, 0.15);
-            padding: 2px 12px;
-            border-radius: 60px;
-            font-size: 12px;
-            font-weight: 400;
-            color: var(--text-secondary);
-            margin-left: 8px;
-        }
-        .discord-msg.style-classic .msg-timestamp {
-            color: #4a6f7f;
-            font-size: 13px;
-        }
-        .discord-msg.style-classic .msg-content {
-            padding-left: 54px;
-            color: var(--text-primary);
-            line-height: 1.8;
-        }
-        .discord-msg.style-classic .msg-content .doc-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--accent-gold);
-            display: block;
-            margin-bottom: 6px;
-        }
-        .discord-msg.style-classic .msg-content .field-line {
-            display: block;
-            font-size: 15px;
-        }
-        .discord-msg.style-classic .msg-content .field-label {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        .discord-msg.style-classic .msg-content .field-value {
-            color: var(--text-primary);
-        }
-        .discord-msg.style-classic .msg-content .divider {
-            border: none;
-            border-top: 1px solid rgba(74, 180, 220, 0.08);
-            margin: 10px 0;
-        }
-        .discord-msg.style-classic .msg-content .text-block {
-            background: rgba(7, 11, 18, 0.6);
-            border-radius: 12px;
-            padding: 14px 18px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            color: #c8dce8;
-            border-left: 3px solid var(--accent-cyan);
-            white-space: pre-wrap;
-            word-break: break-word;
-            margin-top: 4px;
-        }
-        .discord-msg.style-classic .msg-footer {
-            color: #4a6f7f;
-            font-size: 13px;
-            padding-left: 54px;
-            margin-top: 6px;
-        }
-
-        /* Стиль 2: Минималистичный градиент */
-        .discord-msg.style-gradient {
-            background: linear-gradient(145deg, #0f1a24, #16242f);
-            border: 1px solid rgba(74, 180, 220, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-        .discord-msg.style-gradient .msg-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(74, 180, 220, 0.05);
-        }
-        .discord-msg.style-gradient .msg-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 800;
-            color: #fff;
-            flex-shrink: 0;
-            background: linear-gradient(135deg, var(--accent-cyan), #2a7a9a);
-        }
-        .discord-msg.style-gradient .msg-author {
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--text-primary);
-        }
-        .discord-msg.style-gradient .msg-author .badge {
-            background: rgba(74, 180, 220, 0.1);
-            padding: 2px 14px;
-            border-radius: 60px;
-            font-size: 12px;
-            font-weight: 400;
-            color: var(--accent-cyan);
-            margin-left: 8px;
-            border: 1px solid rgba(74, 180, 220, 0.1);
-        }
-        .discord-msg.style-gradient .msg-timestamp {
-            color: #4a6f7f;
-            font-size: 13px;
-            margin-left: auto;
-        }
-        .discord-msg.style-gradient .msg-content {
-            padding-left: 58px;
-            color: var(--text-primary);
-            line-height: 1.8;
-        }
-        .discord-msg.style-gradient .msg-content .doc-title {
-            font-size: 20px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-gold), #f5a97a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: block;
-            margin-bottom: 8px;
-        }
-        .discord-msg.style-gradient .msg-content .field-line {
-            display: block;
-            font-size: 15px;
-        }
-        .discord-msg.style-gradient .msg-content .field-label {
-            color: var(--text-secondary);
-            font-weight: 500;
-            opacity: 0.8;
-        }
-        .discord-msg.style-gradient .msg-content .text-block {
-            background: rgba(7, 11, 18, 0.5);
-            border-radius: 14px;
-            padding: 16px 20px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            color: #c8dce8;
-            border: 1px solid rgba(74, 180, 220, 0.05);
-            white-space: pre-wrap;
-            word-break: break-word;
-            margin-top: 6px;
-        }
-        .discord-msg.style-gradient .msg-footer {
-            color: #4a6f7f;
-            font-size: 13px;
-            padding-left: 58px;
-            margin-top: 8px;
-            opacity: 0.7;
-        }
-
-        /* Стиль 3: Premium с neon glow */
-        .discord-msg.style-neon {
-            background: #0a121c;
-            border: 1px solid rgba(74, 180, 220, 0.2);
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(74, 180, 220, 0.05), inset 0 0 60px rgba(74, 180, 220, 0.02);
-            position: relative;
-            overflow: hidden;
-        }
-        .discord-msg.style-neon::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 40%, rgba(74, 180, 220, 0.03), transparent 60%);
-            pointer-events: none;
-        }
-        .discord-msg.style-neon .msg-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-        }
-        .discord-msg.style-neon .msg-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            font-weight: 800;
-            color: #fff;
-            flex-shrink: 0;
-            background: linear-gradient(135deg, #4ab8dc, #2a7a9a);
-            box-shadow: 0 0 30px rgba(74, 180, 220, 0.2);
-        }
-        .discord-msg.style-neon .msg-author {
-            font-weight: 800;
-            font-size: 17px;
-            color: var(--text-primary);
-            letter-spacing: 0.3px;
-        }
-        .discord-msg.style-neon .msg-author .badge {
-            background: rgba(74, 180, 220, 0.08);
-            padding: 2px 16px;
-            border-radius: 60px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--accent-cyan);
-            margin-left: 10px;
-            border: 1px solid rgba(74, 180, 220, 0.1);
-        }
-        .discord-msg.style-neon .msg-timestamp {
-            color: #4a6f7f;
-            font-size: 13px;
-            margin-left: auto;
-        }
-        .discord-msg.style-neon .msg-content {
-            padding-left: 62px;
-            color: var(--text-primary);
-            line-height: 1.8;
-            position: relative;
-            z-index: 1;
-        }
-        .discord-msg.style-neon .msg-content .doc-title {
-            font-size: 22px;
-            font-weight: 900;
-            color: var(--accent-gold);
-            display: block;
-            margin-bottom: 10px;
-            text-shadow: 0 0 30px rgba(245, 201, 122, 0.1);
-        }
-        .discord-msg.style-neon .msg-content .field-line {
-            display: block;
-            font-size: 15px;
-            padding: 2px 0;
-        }
-        .discord-msg.style-neon .msg-content .field-label {
-            color: var(--text-secondary);
-            font-weight: 500;
-            opacity: 0.7;
-        }
-        .discord-msg.style-neon .msg-content .field-value {
-            color: var(--text-primary);
-        }
-        .discord-msg.style-neon .msg-content .text-block {
-            background: rgba(7, 11, 18, 0.6);
-            border-radius: 16px;
-            padding: 18px 22px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            color: #c8dce8;
-            border-left: 4px solid var(--accent-cyan);
-            box-shadow: 0 0 30px rgba(74, 180, 220, 0.03);
-            white-space: pre-wrap;
-            word-break: break-word;
-            margin-top: 8px;
-        }
-        .discord-msg.style-neon .msg-footer {
-            color: #4a6f7f;
-            font-size: 13px;
-            padding-left: 62px;
-            margin-top: 10px;
-            opacity: 0.6;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Логин */
         .password-input-group {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -1005,146 +1159,171 @@
             .password-input-group .field-control { width: 100%; }
             .password-input-group .btn { width: 100%; }
             .btn-group .btn { flex: 1 1 100%; }
+            .faction-grid-login { grid-template-columns: 1fr 1fr; }
         }
 
-        .login-message {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            min-height: 28px;
-            text-align: center;
-            padding-top: 10px;
+        @media (max-width: 400px) {
+            .faction-grid-login { grid-template-columns: 1fr; }
         }
-        .login-message.error { color: #f28b82; }
-        .login-message.success { color: #6fd6b8; }
 
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 36px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: rgba(16, 28, 44, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(74, 180, 220, 0.15);
-            color: var(--text-primary);
-            padding: 16px 40px;
+        .style-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .style-btn {
+            padding: 8px 20px;
             border-radius: 60px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 15px;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            pointer-events: none;
-            z-index: 999;
-            max-width: 94%;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(74, 180, 220, 0.06);
+            background: rgba(7, 11, 18, 0.3);
+            color: var(--text-secondary);
         }
 
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        .toast.error {
-            border-color: rgba(231, 76, 60, 0.3);
-            background: rgba(30, 10, 10, 0.95);
-        }
-        .toast.success {
-            border-color: rgba(46, 204, 113, 0.2);
-            background: rgba(10, 30, 20, 0.95);
+        .style-btn:hover {
+            border-color: rgba(74, 180, 220, 0.15);
+            color: var(--text-primary);
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(7, 11, 18, 0.5); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(74, 180, 220, 0.2); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(74, 180, 220, 0.3); }
-
-        /* Анимация для премиум */
-        .glow-pulse {
-            animation: glowPulse 3s ease-in-out infinite;
+        .style-btn.active {
+            background: rgba(74, 180, 220, 0.06);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
         }
 
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(74, 180, 220, 0.05); }
-            50% { box-shadow: 0 0 40px rgba(74, 180, 220, 0.1); }
-        }
-
-        .field-with-settings {
-            border-bottom: 1px solid rgba(74, 180, 220, 0.04);
-            padding-bottom: 18px;
-            margin-bottom: 18px;
-        }
-        .field-with-settings:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: rgba(7, 11, 18, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(74, 180, 220, 0.15); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(74, 180, 220, 0.25); }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- ЛОГИН -->
+    <!-- LOGIN -->
     <div class="card" id="loginCard">
         <div class="header">
             <div class="title">
                 <i class="fas fa-lock"></i> ДОСТУП
                 <span class="badge">Formyla Pro</span>
             </div>
-            <div style="color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
-                <i class="fas fa-key"></i> пароль фракции
+            <div style="color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 13px;">
+                <i class="fas fa-key"></i> выберите фракцию
             </div>
         </div>
-        <div class="fields-grid">
-            <div class="field full">
-                <span class="field-label"><i class="fas fa-flag"></i> Фракция <span class="required">*</span></span>
-                <select id="loginFaction" class="field-control">
-                    <option value="mo">Министерство Обороны (МО)</option>
-                    <option value="mvd">Министерство Внутренних Дел (МВД)</option>
-                    <option value="sk">Следственный Комитет (СК)</option>
-                    <option value="gov">Правительство</option>
-                    <option value="proc">Прокуратура</option>
-                    <option value="hosp">Больница / Медицина</option>
-                    <option value="law">Адвокатура</option>
-                    <option value="mchs">МЧС</option>
-                    <option value="fsin">ФСИН</option>
-                </select>
+
+        <!-- Красивый список фракций -->
+        <div class="faction-grid-login" id="factionGrid">
+            <div class="faction-item-login" data-faction="mo" style="border-color: rgba(46,204,113,0.2);">
+                <div class="faction-icon" style="background: #2ecc71;">МО</div>
+                <div class="faction-info">
+                    <div class="faction-name">Министерство Обороны</div>
+                    <div class="faction-short">МО • пароль: <span class="faction-pass">mofr26</span></div>
+                </div>
             </div>
+            <div class="faction-item-login" data-faction="mvd" style="border-color: rgba(231,76,60,0.2);">
+                <div class="faction-icon" style="background: #e74c3c;">МВД</div>
+                <div class="faction-info">
+                    <div class="faction-name">Министерство Внутренних Дел</div>
+                    <div class="faction-short">МВД • пароль: <span class="faction-pass">mvdfr26</span></div>
+                </div>
+            </div>
+            <div class="faction-item-login" data-faction="sk" style="border-color: rgba(52,152,219,0.2);">
+                <div class="faction-icon" style="background: #3498db;">СК</div>
+                <div class="faction-info">
+                    <div class="faction-name">Следственный Комитет</div>
+                    <div class="faction-short">СК • пароль: <span class="faction-pass">skfr26</span></div>
+                </div>
+            </div>
+            <div class="faction-item-login" data-faction="gov" style="border-color: rgba(241,196,15,0.2);">
+                <div class="faction-icon" style="background: #f1c40f; color: #1a1a1a;">ПР</div>
+                <div class="faction-info">
+                    <div class="faction-name">Правительство</div>
+                    <div class="faction-short">Правительство • пароль: <span class="faction-pass">govfr26</span></div>
+                </div>
+            </div>
+            <div class="faction-item-login" data-faction="proc" style="border-color: rgba(155,89,182,0.2);">
+                <div class="faction-icon" style="background: #9b59b6;">ПК</div>
+                <div class="faction-info">
+                    <div class="faction-name">Прокуратура</div>
+                    <div class="faction-short">Прокуратура • пароль: <span class="faction-pass">procfr26</span></div>
+                </div>
+            </div>
+            <div class="faction-item-login" data-faction="hosp" style="border-color: rgba(26,188,156,0.2);">
+                <div class="faction-icon" style="background: #1abc9c;">МД</div>
+                <div class="faction-info">
+                    <div class="faction-name">Больница / Медицина</div>
+                    <div class="faction-short">Медицина • пароль: <span class="faction-pass">hospfr26</span></div>
+                </div>
+            </div>
+            <div class="faction-item-login" data-faction="law" style="border-color: rgba(230,126,34,0.2);">
+                <div class="faction-icon" style="background: #e67e22;">АД</div>
+                <div class="faction-info">
+                    <div class="faction-name">Адвокатура</div>
+                    <div class="faction-short">Адвокатура • пароль: <span class="faction-pass">lawfr26</span></div>
+                </div>
+            </div>
+            <div class="faction-item-login" data-faction="mchs" style="border-color: rgba(243,156,18,0.2);">
+                <div class="faction-icon" style="background: #f39c12;">МЧ</div>
+                <div class="faction-info">
+                    <div class="faction-name">МЧС</div>
+                    <div class="faction-short">МЧС • пароль: <span class="faction-pass">mchsfr26</span></div>
+                </div>
+            </div>
+            <div class="faction-item-login" data-faction="fsin" style="border-color: rgba(149,165,166,0.2);">
+                <div class="faction-icon" style="background: #95a5a6;">ФС</div>
+                <div class="faction-info">
+                    <div class="faction-name">ФСИН</div>
+                    <div class="faction-short">ФСИН • пароль: <span class="faction-pass">fsinfr26</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 16px;">
             <div class="field full">
                 <span class="field-label"><i class="fas fa-lock"></i> Пароль <span class="required">*</span></span>
                 <div class="password-input-group">
-                    <input type="password" id="loginPassword" class="field-control" placeholder="Введите пароль фракции" />
-                    <button class="btn btn-login" id="loginBtn">
-                        <i class="fas fa-sign-in-alt"></i> ВОЙТИ
-                    </button>
+                    <input type="password" id="loginPassword" class="field-control" placeholder="Введите пароль выбранной фракции" />
+                    <button class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> ВОЙТИ</button>
                 </div>
                 <div id="loginMessage" class="login-message"></div>
             </div>
         </div>
     </div>
 
-    <!-- ОСНОВНАЯ -->
+    <!-- MAIN -->
     <div class="card hidden" id="mainCard">
         <div class="header">
             <div class="title">
-                <i class="fas fa-file-alt"></i> ГЕНЕРАТОР ДОКУМЕНТОВ
+                <i class="fas fa-file-alt"></i> ГЕНЕРАТОР
                 <span class="badge" id="factionBadge">МО</span>
             </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" id="logoutBtn" style="padding: 6px 20px; font-size: 13px; flex: 0;">
+                <button class="theme-toggle" id="themeToggle" title="Переключить тему">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-secondary" id="logoutBtn" style="padding: 6px 18px; font-size: 12px; flex: 0;">
                     <i class="fas fa-sign-out-alt"></i> ВЫЙТИ
                 </button>
                 <span class="status-tag" id="factionTag"><i class="fas fa-shield-alt"></i> МО</span>
             </div>
         </div>
 
-        <!-- Вкладки -->
+        <!-- Tabs -->
         <div class="tabs">
             <button class="tab-btn active" data-tab="main"><i class="fas fa-pen"></i> Основное</button>
+            <button class="tab-btn" data-tab="analytics"><i class="fas fa-chart-line"></i> Аналитика</button>
+            <button class="tab-btn" data-tab="templates"><i class="fas fa-copy"></i> Шаблоны</button>
             <button class="tab-btn" data-tab="settings"><i class="fas fa-sliders-h"></i> Настройки</button>
             <button class="tab-btn" data-tab="styles"><i class="fas fa-palette"></i> Стили</button>
         </div>
 
-        <!-- Вкладка: Основное -->
+        <!-- TAB: Основное -->
         <div class="tab-content active" id="tab-main">
             <div class="fields-grid">
                 <div class="field">
@@ -1197,28 +1376,95 @@
                 </div>
             </div>
 
+            <!-- AI Assistant -->
+            <div class="ai-assistant">
+                <div class="ai-icon"><i class="fas fa-robot"></i></div>
+                <div class="ai-content">
+                    <textarea id="aiPrompt" placeholder="Опишите, что нужно написать в документе..." rows="2"></textarea>
+                    <div class="ai-actions">
+                        <button class="btn btn-success btn-small" id="aiGenerateBtn"><i class="fas fa-wand-magic-sparkles"></i> Сгенерировать</button>
+                        <button class="btn btn-secondary btn-small" id="aiImproveBtn"><i class="fas fa-pen-fancy"></i> Улучшить</button>
+                        <button class="btn btn-secondary btn-small" id="aiCheckBtn"><i class="fas fa-check-circle"></i> Проверить</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="webhook-section">
                 <div class="webhook-status">
                     <i class="fas fa-paper-plane" style="color: var(--text-secondary);"></i>
                     <span style="color: var(--text-secondary);">Webhook:</span>
                     <span class="status" id="webhookStatus">⏳ Ожидание</span>
                 </div>
-                <span style="font-size:13px; color: #4a6f7f;"><i class="fas fa-info-circle"></i> Отправка в канал фракции</span>
+                <span style="font-size:12px; color: var(--text-muted);"><i class="fas fa-info-circle"></i> Отправка в канал</span>
             </div>
 
             <div class="btn-group">
                 <button class="btn btn-primary" id="previewBtn"><i class="fas fa-eye"></i> ПРЕДПРОСМОТР</button>
                 <button class="btn btn-publish" id="publishBtn"><i class="fas fa-cloud-upload-alt"></i> ОПУБЛИКОВАТЬ</button>
                 <button class="btn btn-secondary" id="clearBtn"><i class="fas fa-trash-alt"></i> ОЧИСТИТЬ</button>
+                <button class="btn btn-secondary" id="saveTemplateBtn" style="flex:0.5;"><i class="fas fa-save"></i> Шаблон</button>
             </div>
         </div>
 
-        <!-- Вкладка: Настройки -->
-        <div class="tab-content" id="tab-settings">
-            <div style="color: var(--text-secondary); font-size: 13px; font-family: 'JetBrains Mono', monospace; margin-bottom: 22px; opacity: 0.7;">
-                <i class="fas fa-database"></i> Настройки сохраняются в облаке GitHub (Gist)
+        <!-- TAB: Аналитика -->
+        <div class="tab-content" id="tab-analytics">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--text-secondary);">
+                    <i class="fas fa-user"></i> Статистика
+                </span>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button class="btn btn-secondary btn-small" data-period="day">День</button>
+                    <button class="btn btn-secondary btn-small active" data-period="week">Неделя</button>
+                    <button class="btn btn-secondary btn-small" data-period="month">Месяц</button>
+                </div>
             </div>
 
+            <div class="analytics-grid" id="statsGrid">
+                <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Всего</div></div>
+                <div class="stat-card"><div class="stat-number" id="statToday">0</div><div class="stat-label">Сегодня</div></div>
+                <div class="stat-card"><div class="stat-number" id="statWeek">0</div><div class="stat-label">За неделю</div></div>
+                <div class="stat-card"><div class="stat-number" id="statMonth">0</div><div class="stat-label">За месяц</div></div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title"><i class="fas fa-chart-bar"></i> Популярные типы документов</div>
+                <div class="chart-bars" id="docTypeChart"></div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title"><i class="fas fa-clock"></i> Активность по часам</div>
+                <div class="chart-bars" id="hourChart"></div>
+            </div>
+
+            <div style="margin-top:18px;">
+                <div class="chart-title"><i class="fas fa-users"></i> Активность сотрудников</div>
+                <table class="activity-table" id="userActivityTable">
+                    <thead><tr><th>Сотрудник</th><th>Документов</th><th>Активность</th></tr></thead>
+                    <tbody id="userActivityBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB: Шаблоны -->
+        <div class="tab-content" id="tab-templates">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+                <span style="font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--text-secondary);">
+                    <i class="fas fa-copy"></i> Мои шаблоны
+                </span>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button class="btn btn-secondary btn-small" id="showAllTemplates">Все</button>
+                    <button class="btn btn-secondary btn-small" id="showPublicTemplates">Публичные</button>
+                    <button class="btn btn-secondary btn-small" id="showPrivateTemplates">Приватные</button>
+                </div>
+            </div>
+            <div class="templates-grid" id="templatesGrid"></div>
+        </div>
+
+        <!-- TAB: Настройки -->
+        <div class="tab-content" id="tab-settings">
+            <div style="color: var(--text-secondary); font-size:13px; font-family:'JetBrains Mono',monospace; margin-bottom:16px; opacity:0.7;">
+                <i class="fas fa-database"></i> Настройки сохраняются в облаке
+            </div>
             <div class="field-with-settings">
                 <div class="list-settings">
                     <div class="list-header">
@@ -1231,7 +1477,6 @@
                     <div class="list-items" id="docTypeList"></div>
                 </div>
             </div>
-
             <div class="field-with-settings">
                 <div class="list-settings">
                     <div class="list-header">
@@ -1244,7 +1489,6 @@
                     <div class="list-items" id="positionList"></div>
                 </div>
             </div>
-
             <div class="field-with-settings">
                 <div class="list-settings">
                     <div class="list-header">
@@ -1259,36 +1503,38 @@
             </div>
         </div>
 
-        <!-- Вкладка: Стили -->
+        <!-- TAB: Стили -->
         <div class="tab-content" id="tab-styles">
-            <div style="color: var(--text-secondary); font-size: 13px; font-family: 'JetBrains Mono', monospace; margin-bottom: 18px; opacity: 0.7;">
-                <i class="fas fa-palette"></i> Выберите стиль оформления сообщения в Discord
+            <div style="color: var(--text-secondary); font-size:13px; font-family:'JetBrains Mono',monospace; margin-bottom:14px; opacity:0.7;">
+                <i class="fas fa-palette"></i> Выберите стиль оформления для Discord
             </div>
-            <div class="style-selector" style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+            <div class="style-selector">
                 <button class="style-btn active" data-style="classic"><i class="fas fa-gem"></i> Классический</button>
                 <button class="style-btn" data-style="gradient"><i class="fas fa-water"></i> Градиент</button>
                 <button class="style-btn" data-style="neon"><i class="fas fa-bolt"></i> Neon Premium</button>
             </div>
-            <div style="background: rgba(7,11,18,0.3); border-radius:16px; padding:16px 20px; border:1px solid rgba(74,180,220,0.04);">
+            <div style="background: rgba(7,11,18,0.2); border-radius:14px; padding:14px 18px; border:1px solid rgba(74,180,220,0.04); margin-top:10px;">
                 <span style="color:var(--text-secondary); font-size:13px; font-family:'JetBrains Mono',monospace;">
-                    <i class="fas fa-info-circle"></i> Стиль применяется к предпросмотру и отправке
+                    <i class="fas fa-info-circle"></i> Стиль меняет оформление сообщения в Discord
                 </span>
             </div>
         </div>
     </div>
 
-    <!-- ПРЕДПРОСМОТР -->
+    <!-- PREVIEW -->
     <div class="card hidden" id="previewCard">
-        <div class="preview-header">
-            <div class="preview-title"><i class="fas fa-chevron-circle-right"></i> ПРЕДПРОСМОТР</div>
-            <span style="color: var(--text-secondary); font-size: 12px; font-family: 'JetBrains Mono', monospace; opacity: 0.6;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid rgba(74,180,220,0.06); padding-bottom:14px; margin-bottom:16px;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--text-secondary);">
+                <i class="fas fa-chevron-circle-right"></i> ПРЕДПРОСМОТР
+            </span>
+            <span style="color:var(--text-muted); font-size:12px; font-family:'JetBrains Mono',monospace;">
                 <i class="fas fa-palette"></i> Стиль: <span id="currentStyleLabel">Классический</span>
             </span>
         </div>
         <div id="previewContent">
             <div class="discord-msg style-classic">
-                <div style="color: #4a6f7f; text-align:center; padding:28px; font-family:'Inter',sans-serif;">
-                    <i class="fas fa-info-circle" style="font-size:24px; display:block; margin-bottom:10px;"></i>
+                <div style="color: var(--text-muted); text-align:center; padding:28px; font-family:'Inter',sans-serif;">
+                    <i class="fas fa-info-circle" style="font-size:22px; display:block; margin-bottom:10px;"></i>
                     Заполните все обязательные поля
                 </div>
             </div>
@@ -1302,11 +1548,18 @@
 <script>
     (function() {
         // ============================================================
-        // 1. ПАРОЛИ
+        // 1. ПАРОЛИ (новые, по типу govfr26, mvdfr26 и т.д.)
         // ============================================================
         const PASSWORDS = {
-            mo:'1234', mvd:'5678', sk:'9012', gov:'gov2024', proc:'7890',
-            hosp:'1111', law:'2222', mchs:'3333', fsin:'4444'
+            mo: 'mofr26',
+            mvd: 'mvdfr26',
+            sk: 'skfr26',
+            gov: 'govfr26',
+            proc: 'procfr26',
+            hosp: 'hospfr26',
+            law: 'lawfr26',
+            mchs: 'mchsfr26',
+            fsin: 'fsinfr26'
         };
 
         const factionNames = {
@@ -1322,6 +1575,10 @@
             mo:'faction-mo', mvd:'faction-mvd', sk:'faction-sk', gov:'faction-gov',
             proc:'faction-proc', hosp:'faction-hosp', law:'faction-law',
             mchs:'faction-mchs', fsin:'faction-fsin'
+        };
+        const factionColors = {
+            mo:'#2ecc71', mvd:'#e74c3c', sk:'#3498db', gov:'#f1c40f',
+            proc:'#9b59b6', hosp:'#1abc9c', law:'#e67e22', mchs:'#f39c12', fsin:'#95a5a6'
         };
 
         // ============================================================
@@ -1348,101 +1605,20 @@
         };
 
         // ============================================================
-        // 4. GIST (облачная БД)
+        // 4. ДАННЫЕ
         // ============================================================
-        const GIST_ID = 'd5f7a8b9c0e1f2a3b4c5'; // замените на ваш Gist ID
-        const GITHUB_TOKEN = ''; // токен для записи, если нужен
         let listsData = {};
         let currentFaction = null;
         let isLoggedIn = false;
         let currentStyle = 'classic';
+        let currentUser = 'Сотрудник';
+        let analyticsData = [];
+        let templates = [];
+        let filterTemplates = 'all';
+        let statsPeriod = 'week';
 
         // ============================================================
-        // 5. РАБОТА С GIST (облачная синхронизация)
-        // ============================================================
-        async function loadFromGist() {
-            try {
-                const resp = await fetch(`https://api.github.com/gists/${GIST_ID}`);
-                if (!resp.ok) throw new Error('Gist not found');
-                const data = await resp.json();
-                const files = data.files;
-                const content = files['formyla_data.json']?.content;
-                if (content) {
-                    const parsed = JSON.parse(content);
-                    // сливаем с дефолтами
-                    for (const faction in DEFAULT_LISTS) {
-                        if (parsed[faction]) {
-                            for (const key in DEFAULT_LISTS[faction]) {
-                                if (parsed[faction][key]) {
-                                    DEFAULT_LISTS[faction][key] = parsed[faction][key];
-                                }
-                            }
-                        }
-                    }
-                    console.log('✅ Данные загружены из Gist');
-                }
-            } catch (e) {
-                console.log('⚠️ Не удалось загрузить из Gist, используем локальные', e);
-            }
-        }
-
-        async function saveToGist() {
-            try {
-                // Собираем все данные
-                const allData = {};
-                for (const faction in DEFAULT_LISTS) {
-                    allData[faction] = DEFAULT_LISTS[faction];
-                }
-                const payload = {
-                    files: {
-                        'formyla_data.json': {
-                            content: JSON.stringify(allData, null, 2)
-                        }
-                    }
-                };
-                // Если есть токен — обновляем, иначе создаём новый
-                const headers = { 'Content-Type': 'application/json' };
-                if (GITHUB_TOKEN) headers['Authorization'] = `token ${GITHUB_TOKEN}`;
-
-                const resp = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-                    method: 'PATCH',
-                    headers: headers,
-                    body: JSON.stringify(payload)
-                });
-                if (!resp.ok) throw new Error('Failed to update gist');
-                console.log('✅ Данные сохранены в Gist');
-                showToast('☁️ Настройки сохранены в облаке', 'success');
-            } catch (e) {
-                console.error('❌ Ошибка сохранения в Gist:', e);
-                showToast('⚠️ Не удалось сохранить в облаке, данные локально', 'error');
-            }
-        }
-
-        // ============================================================
-        // 6. РАБОТА С ЛОКАЛЬНЫМИ ДАННЫМИ (кэш)
-        // ============================================================
-        function loadListsForFaction(faction) {
-            const base = DEFAULT_LISTS[faction] || DEFAULT_LISTS.mo;
-            listsData = {
-                docTypes: [...base.docTypes],
-                positions: [...base.positions],
-                fullNames: [...base.fullNames]
-            };
-        }
-
-        function saveListsForFaction(faction) {
-            // Сохраняем в DEFAULT_LISTS
-            DEFAULT_LISTS[faction] = {
-                docTypes: [...listsData.docTypes],
-                positions: [...listsData.positions],
-                fullNames: [...listsData.fullNames]
-            };
-            // Сохраняем в Gist
-            saveToGist();
-        }
-
-        // ============================================================
-        // 7. DOM
+        // 5. DOM
         // ============================================================
         const $ = id => document.getElementById(id);
         const loginCard = $('loginCard'), mainCard = $('mainCard'), previewCard = $('previewCard');
@@ -1460,12 +1636,22 @@
         const newDocType = $('newDocType'), newPosition = $('newPosition'), newFullName = $('newFullName');
         const addDocTypeBtn = $('addDocTypeBtn'), addPositionBtn = $('addPositionBtn'), addFullNameBtn = $('addFullNameBtn');
         const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabMain = $('tab-main'), tabSettings = $('tab-settings'), tabStyles = $('tab-styles');
+        const tabMain = $('tab-main'), tabAnalytics = $('tab-analytics'), tabTemplates = $('tab-templates');
+        const tabSettings = $('tab-settings'), tabStyles = $('tab-styles');
         const styleBtns = document.querySelectorAll('.style-btn');
         const currentStyleLabel = $('currentStyleLabel');
+        const themeToggle = $('themeToggle');
+        const aiPrompt = $('aiPrompt'), aiGenerateBtn = $('aiGenerateBtn'), aiImproveBtn = $('aiImproveBtn'), aiCheckBtn = $('aiCheckBtn');
+        const saveTemplateBtn = $('saveTemplateBtn');
+        const templatesGrid = $('templatesGrid');
+        const showAllTemplates = $('showAllTemplates'), showPublicTemplates = $('showPublicTemplates'), showPrivateTemplates = $('showPrivateTemplates');
+        const statTotal = $('statTotal'), statToday = $('statToday'), statWeek = $('statWeek'), statMonth = $('statMonth');
+        const docTypeChart = $('docTypeChart'), hourChart = $('hourChart'), userActivityBody = $('userActivityBody');
+        const periodBtns = document.querySelectorAll('[data-period]');
+        const factionItems = document.querySelectorAll('.faction-item-login');
 
         // ============================================================
-        // 8. ВСПОМОГАТЕЛЬНЫЕ
+        // 6. ВСПОМОГАТЕЛЬНЫЕ
         // ============================================================
         function getCurrentDate() {
             const d = new Date();
@@ -1483,7 +1669,7 @@
         function getFactionLabel(v){ return factionNames[v]||v; }
         function getFactionShort(v){ return factionShort[v]||v; }
         function getFactionClass(v){ return factionClasses[v]||'faction-mo'; }
-
+        function getFactionColor(v){ return factionColors[v]||'#4ab8dc'; }
         function getSelectedRecipients() {
             const checks = recipientGroup.querySelectorAll('input[type="checkbox"]:checked');
             return Array.from(checks).map(cb => cb.value);
@@ -1495,7 +1681,6 @@
             let last = r.pop();
             return r.join(', ')+' и '+last;
         }
-
         function showToast(msg, type='success') {
             toast.textContent = msg;
             toast.className = 'toast';
@@ -1503,11 +1688,317 @@
             else if(type==='success') toast.classList.add('success');
             toast.classList.add('show');
             clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(()=>toast.classList.remove('show'), 3800);
+            toast._timeout = setTimeout(()=>toast.classList.remove('show'), 3500);
+        }
+        function getDocKey() { return currentFaction + '_' + currentUser; }
+
+        // ============================================================
+        // 7. АНАЛИТИКА
+        // ============================================================
+        function loadAnalytics() {
+            const key = 'formyla_analytics_' + getDocKey();
+            const saved = localStorage.getItem(key);
+            analyticsData = saved ? JSON.parse(saved) : [];
+        }
+
+        function saveAnalytics() {
+            const key = 'formyla_analytics_' + getDocKey();
+            localStorage.setItem(key, JSON.stringify(analyticsData));
+        }
+
+        function addAnalyticsRecord(doc) {
+            analyticsData.push({
+                date: new Date().toISOString(),
+                docType: doc.docType || docType.value,
+                user: currentUser,
+                faction: currentFaction
+            });
+            saveAnalytics();
+            updateAnalytics();
+        }
+
+        function updateAnalytics() {
+            const now = new Date();
+            const today = now.toDateString();
+            const weekAgo = new Date(now);
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            const monthAgo = new Date(now);
+            monthAgo.setMonth(monthAgo.getMonth() - 1);
+
+            const total = analyticsData.length;
+            const todayCount = analyticsData.filter(d => new Date(d.date).toDateString() === today).length;
+            const weekCount = analyticsData.filter(d => new Date(d.date) >= weekAgo).length;
+            const monthCount = analyticsData.filter(d => new Date(d.date) >= monthAgo).length;
+
+            statTotal.textContent = total;
+            statToday.textContent = todayCount;
+            statWeek.textContent = weekCount;
+            statMonth.textContent = monthCount;
+
+            // График типов
+            const typeCounts = {};
+            analyticsData.forEach(d => {
+                const t = d.docType || 'Другой';
+                typeCounts[t] = (typeCounts[t] || 0) + 1;
+            });
+            const sortedTypes = Object.entries(typeCounts).sort((a,b) => b[1] - a[1]);
+            const maxType = sortedTypes.length ? sortedTypes[0][1] : 1;
+
+            docTypeChart.innerHTML = '';
+            if (sortedTypes.length === 0) {
+                docTypeChart.innerHTML = '<div style="color:var(--text-muted);padding:20px;">Нет данных</div>';
+            } else {
+                sortedTypes.forEach(([type, count]) => {
+                    const pct = (count / maxType) * 100;
+                    const wrap = document.createElement('div');
+                    wrap.className = 'chart-bar-wrap';
+                    wrap.innerHTML = `
+                        <div class="chart-bar-value">${count}</div>
+                        <div class="chart-bar" style="height:${Math.max(pct * 1.2, 6)}px;"></div>
+                        <div class="chart-bar-label">${type.length > 8 ? type.slice(0,6)+'…' : type}</div>
+                    `;
+                    docTypeChart.appendChild(wrap);
+                });
+            }
+
+            // График по часам
+            const hourCounts = Array(24).fill(0);
+            analyticsData.forEach(d => {
+                const h = new Date(d.date).getHours();
+                hourCounts[h] = (hourCounts[h] || 0) + 1;
+            });
+            const maxHour = Math.max(...hourCounts, 1);
+            hourChart.innerHTML = '';
+            hourCounts.forEach((count, i) => {
+                const pct = (count / maxHour) * 100;
+                const wrap = document.createElement('div');
+                wrap.className = 'chart-bar-wrap';
+                wrap.innerHTML = `
+                    <div class="chart-bar-value">${count}</div>
+                    <div class="chart-bar" style="height:${Math.max(pct * 1.2, 4)}px;"></div>
+                    <div class="chart-bar-label">${String(i).padStart(2,'0')}:00</div>
+                `;
+                hourChart.appendChild(wrap);
+            });
+
+            // Таблица пользователей
+            const userCounts = {};
+            analyticsData.forEach(d => {
+                const u = d.user || 'Сотрудник';
+                userCounts[u] = (userCounts[u] || 0) + 1;
+            });
+            const sortedUsers = Object.entries(userCounts).sort((a,b) => b[1] - a[1]);
+            const maxUser = sortedUsers.length ? sortedUsers[0][1] : 1;
+            userActivityBody.innerHTML = '';
+            if (sortedUsers.length === 0) {
+                userActivityBody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:20px;">Нет данных</td></tr>';
+            } else {
+                const colors = ['#4ab8dc','#2ecc71','#f5c97a','#e74c3c','#9b59b6','#e67e22','#1abc9c','#3498db','#f39c12'];
+                sortedUsers.forEach(([user, count], idx) => {
+                    const pct = (count / maxUser) * 100;
+                    const tr = document.createElement('tr');
+                    const color = colors[idx % colors.length];
+                    tr.innerHTML = `
+                        <td>
+                            <span class="user-avatar" style="background:${color};">${user.charAt(0)}</span>
+                            ${user}
+                        </td>
+                        <td>${count}</td>
+                        <td>
+                            <div class="progress-bar">
+                                <div class="fill" style="width:${Math.max(pct, 5)}%;"></div>
+                            </div>
+                        </td>
+                    `;
+                    userActivityBody.appendChild(tr);
+                });
+            }
         }
 
         // ============================================================
-        // 9. ОТРИСОВКА СПИСКОВ
+        // 8. ШАБЛОНЫ
+        // ============================================================
+        function loadTemplates() {
+            const key = 'formyla_templates_' + currentFaction;
+            const saved = localStorage.getItem(key);
+            templates = saved ? JSON.parse(saved) : [];
+        }
+
+        function saveTemplates() {
+            const key = 'formyla_templates_' + currentFaction;
+            localStorage.setItem(key, JSON.stringify(templates));
+        }
+
+        function renderTemplates() {
+            let filtered = templates;
+            if (filterTemplates === 'public') filtered = templates.filter(t => t.isPublic);
+            if (filterTemplates === 'private') filtered = templates.filter(t => !t.isPublic);
+
+            templatesGrid.innerHTML = '';
+            if (filtered.length === 0) {
+                templatesGrid.innerHTML = `<div style="color:var(--text-muted);text-align:center;padding:30px;grid-column:1/-1;">
+                    <i class="fas fa-copy" style="font-size:28px;display:block;margin-bottom:10px;"></i>
+                    Нет шаблонов
+                </div>`;
+                return;
+            }
+            filtered.forEach((t, idx) => {
+                const card = document.createElement('div');
+                card.className = 'template-card';
+                const realIdx = templates.indexOf(t);
+                card.innerHTML = `
+                    <div class="template-name">${t.name}</div>
+                    <div class="template-meta">
+                        <span class="tag ${t.isPublic ? 'template-badge-public' : 'template-badge-private'}">
+                            ${t.isPublic ? '🌍 Публичный' : '🔒 Приватный'}
+                        </span>
+                        <span>${t.category || 'Без категории'}</span>
+                        <span>${t.date || ''}</span>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-primary btn-small load-template" data-idx="${realIdx}">
+                            <i class="fas fa-file-import"></i> Загрузить
+                        </button>
+                        <button class="btn btn-secondary btn-small delete-template" data-idx="${realIdx}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                templatesGrid.appendChild(card);
+
+                card.querySelector('.load-template').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    loadTemplate(realIdx);
+                });
+                card.querySelector('.delete-template').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteTemplate(realIdx);
+                });
+            });
+        }
+
+        function saveCurrentAsTemplate() {
+            if (!validateFields()) {
+                showToast('⚠️ Заполните все поля','error');
+                return;
+            }
+            const name = prompt('Название шаблона:', docType.value + ' — ' + subject.value.slice(0,30));
+            if (!name) return;
+            const isPublic = confirm('Сделать шаблон публичным?');
+            const category = prompt('Категория (Приказы, Распоряжения, Протоколы...):', 'Приказы');
+
+            templates.push({
+                name: name,
+                docType: docType.value,
+                docNumber: docNumber.value,
+                position: position.value,
+                fullName: fullName.value,
+                subject: subject.value,
+                content: content.value,
+                recipients: getSelectedRecipients(),
+                isPublic: isPublic,
+                category: category || 'Без категории',
+                date: new Date().toLocaleDateString('ru-RU'),
+                author: currentUser
+            });
+            saveTemplates();
+            renderTemplates();
+            showToast('✅ Шаблон сохранён!','success');
+        }
+
+        function loadTemplate(idx) {
+            const t = templates[idx];
+            if (!t) return;
+            docType.value = t.docType || '';
+            docNumber.value = t.docNumber || '';
+            position.value = t.position || '';
+            fullName.value = t.fullName || '';
+            subject.value = t.subject || '';
+            content.value = t.content || '';
+            recipientGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.checked = t.recipients ? t.recipients.includes(cb.value) : false;
+                cb.closest('.checkbox-item').classList.toggle('checked', cb.checked);
+            });
+            showToast('📄 Шаблон загружен','success');
+            document.querySelector('.tab-btn[data-tab="main"]')?.click();
+        }
+
+        function deleteTemplate(idx) {
+            if (!confirm('Удалить шаблон?')) return;
+            templates.splice(idx, 1);
+            saveTemplates();
+            renderTemplates();
+            showToast('🗑 Шаблон удалён','success');
+        }
+
+        // ============================================================
+        // 9. AI
+        // ============================================================
+        function generateAI() {
+            const prompt = aiPrompt.value.trim();
+            if (!prompt) { showToast('⚠️ Напишите запрос','error'); return; }
+            const templates_ai = {
+                'приказ': 'ПРИКАЗ\n\nВо исполнение плана работы, ПРИКАЗЫВАЮ:\n1. Утвердить план мероприятий.\n2. Назначить ответственным [должность] [ФИО].\n3. Контроль исполнения оставляю за собой.',
+                'распоряжение': 'РАСПОРЯЖЕНИЕ\n\nВ целях оптимизации работы, ОБЯЗЫВАЮ:\n1. Провести анализ текущей деятельности.\n2. Подготовить отчёт к [дата].\n3. Исполнителям доложить о результатах.',
+                'протокол': 'ПРОТОКОЛ\n\nЗаседание от [дата]\nПовестка: [тема]\nПрисутствовали: [список]\nРешение: [решение]',
+                'отчёт': 'ОТЧЁТ\n\nЗа период [дата-дата]\nВыполнено:\n1. [пункт 1]\n2. [пункт 2]\nРезультаты: [результаты]',
+                'заявление': 'ЗАЯВЛЕНИЕ\n\nПрошу [действие] в связи с [причина].\nДата: [дата]\nПодпись: [ФИО]'
+            };
+            let result = '';
+            const lower = prompt.toLowerCase();
+            for (const [key, value] of Object.entries(templates_ai)) {
+                if (lower.includes(key)) { result = value; break; }
+            }
+            if (!result) {
+                result = `ДОКУМЕНТ\n\nТема: ${prompt}\n\nСодержание:\n[Ваш текст]\n\nДата: ${getCurrentDate()}`;
+            }
+            result = result
+                .replace(/\[дата\]/g, formatDate(getCurrentDate()))
+                .replace(/\[должность\]/g, position.value || '[должность]')
+                .replace(/\[ФИО\]/g, fullName.value || '[ФИО]')
+                .replace(/\[тема\]/g, subject.value || prompt)
+                .replace(/\[решение\]/g, 'Принять к сведению.');
+            content.value = result;
+            showToast('🤖 Текст сгенерирован!','success');
+            aiPrompt.value = '';
+        }
+
+        function improveStyle() {
+            const text = content.value.trim();
+            if (!text) { showToast('⚠️ Напишите текст','error'); return; }
+            const improved = text
+                .replace(/я/g, 'мы').replace(/мое/g, 'наше')
+                .replace(/сделать/g, 'осуществить').replace(/нужно/g, 'необходимо')
+                .replace(/потом/g, 'впоследствии').replace(/очень/g, 'весьма')
+                .replace(/большой/g, 'значительный').replace(/хороший/g, 'качественный');
+            if (improved !== text) {
+                content.value = improved;
+                showToast('✨ Стиль улучшен!','success');
+            } else {
+                showToast('💡 Текст уже хорошего стиля','success');
+            }
+        }
+
+        function checkSpelling() {
+            const text = content.value.trim();
+            if (!text) { showToast('⚠️ Напишите текст','error'); return; }
+            const errors = {
+                'привет': 'привет', 'здраствуйте': 'здравствуйте', 'падпись': 'подпись',
+                'дакумент': 'документ', 'расспоряжение': 'распоряжение', 'заседание': 'заседание',
+                'решение': 'решение', 'исполнение': 'исполнение', 'контроль': 'контроль',
+                'ответственный': 'ответственный', 'пратокол': 'протокол'
+            };
+            let found = false, corrected = text;
+            for (const [wrong, right] of Object.entries(errors)) {
+                const regex = new RegExp(wrong, 'gi');
+                if (regex.test(text)) { corrected = corrected.replace(regex, right); found = true; }
+            }
+            if (found) { content.value = corrected; showToast('📝 Ошибки исправлены!','success'); }
+            else { showToast('✅ Орфография в порядке!','success'); }
+        }
+
+        // ============================================================
+        // 10. СПИСКИ
         // ============================================================
         function renderList(container, items, removeFn) {
             container.innerHTML = '';
@@ -1554,25 +2045,39 @@
             });
         }
 
-        // ============================================================
-        // 10. ОБНОВЛЕНИЕ SELECT
-        // ============================================================
         function updateSelects() {
             const dt = listsData.docTypes || ['Приказ','Постановление','Распоряжение'];
             docType.innerHTML = '';
             dt.forEach(d => { const opt=document.createElement('option'); opt.value=d; opt.textContent=d; docType.appendChild(opt); });
-
             const pos = listsData.positions || ['Сотрудник'];
             position.innerHTML = '';
             pos.forEach(p => { const opt=document.createElement('option'); opt.value=p; opt.textContent=p; position.appendChild(opt); });
-
             const names = listsData.fullNames || ['Иванов И.И.'];
             fullName.innerHTML = '';
             names.forEach(n => { const opt=document.createElement('option'); opt.value=n; opt.textContent=n; fullName.appendChild(opt); });
         }
 
+        function loadListsForFaction(faction) {
+            const base = DEFAULT_LISTS[faction] || DEFAULT_LISTS.mo;
+            listsData = {
+                docTypes: [...base.docTypes],
+                positions: [...base.positions],
+                fullNames: [...base.fullNames]
+            };
+        }
+
+        function saveListsForFaction(faction) {
+            DEFAULT_LISTS[faction] = {
+                docTypes: [...listsData.docTypes],
+                positions: [...listsData.positions],
+                fullNames: [...listsData.fullNames]
+            };
+            localStorage.setItem('formyla_lists_' + faction, JSON.stringify(DEFAULT_LISTS[faction]));
+            showToast('☁️ Настройки сохранены','success');
+        }
+
         // ============================================================
-        // 11. UI ФРАКЦИИ
+        // 11. UI
         // ============================================================
         function updateUIForFaction() {
             if(!currentFaction) return;
@@ -1587,6 +2092,10 @@
             renderAllLists();
             updateSelects();
             updateWebhookStatus();
+            loadAnalytics();
+            updateAnalytics();
+            loadTemplates();
+            renderTemplates();
         }
 
         function updateWebhookStatus() {
@@ -1602,9 +2111,6 @@
             }
         }
 
-        // ============================================================
-        // 12. ДОБАВЛЕНИЕ
-        // ============================================================
         function addToList(input, listKey, msg) {
             const val = input.value.trim();
             if(!val) { showToast('⚠️ Введите значение','error'); return; }
@@ -1619,7 +2125,7 @@
         }
 
         // ============================================================
-        // 13. ВАЛИДАЦИЯ
+        // 12. ВАЛИДАЦИЯ
         // ============================================================
         function validateFields() {
             let valid=true;
@@ -1633,14 +2139,14 @@
                 else f.el.classList.remove('error');
             });
             if(getSelectedRecipients().length===0) {
-                recipientError.textContent = '⚠️ Выберите хотя бы одного получателя';
+                recipientError.textContent = '⚠️ Выберите получателя';
                 valid=false;
             } else recipientError.textContent='';
             return valid;
         }
 
         // ============================================================
-        // 14. ПОСТРОЕНИЕ ДОКУМЕНТА
+        // 13. ДОКУМЕНТ
         // ============================================================
         function buildDocument() {
             return {
@@ -1648,18 +2154,20 @@
                 faction: getFactionLabel(currentFaction),
                 factionShort: getFactionShort(currentFaction),
                 factionClass: getFactionClass(currentFaction),
+                factionColor: getFactionColor(currentFaction),
                 date: formatDate(docDate.value),
                 time: getTime(),
                 recipients: getRecipientsFormatted(),
                 position: position.value,
                 fullName: fullName.value,
                 subject: subject.value.trim(),
-                content: content.value.trim()
+                content: content.value.trim(),
+                docType: docType.value
             };
         }
 
         // ============================================================
-        // 15. ПРЕДПРОСМОТР с выбором стиля
+        // 14. ПРЕДПРОСМОТР
         // ============================================================
         function renderPreview() {
             if(!isLoggedIn) return;
@@ -1667,8 +2175,8 @@
             if(!doc.fullName || !doc.subject || !doc.content || !doc.recipients) {
                 previewContent.innerHTML = `
                     <div class="discord-msg style-${currentStyle}">
-                        <div style="color:#4a6f7f;text-align:center;padding:28px;font-family:'Inter',sans-serif;">
-                            <i class="fas fa-info-circle" style="font-size:24px;display:block;margin-bottom:10px;"></i>
+                        <div style="color:var(--text-muted);text-align:center;padding:28px;">
+                            <i class="fas fa-info-circle" style="font-size:22px;display:block;margin-bottom:10px;"></i>
                             Заполните все обязательные поля
                         </div>
                     </div>
@@ -1678,15 +2186,13 @@
             }
 
             const avatar = doc.factionShort.charAt(0);
-            const styleClass = 'style-' + currentStyle;
             const styleNames = { classic:'Классический', gradient:'Градиент', neon:'Neon Premium' };
             currentStyleLabel.textContent = styleNames[currentStyle] || 'Классический';
 
-            // Общий контент для всех стилей
-            const contentHTML = `
-                <div class="discord-msg ${styleClass}">
+            previewContent.innerHTML = `
+                <div class="discord-msg style-${currentStyle}">
                     <div class="msg-header">
-                        <div class="msg-avatar ${doc.factionClass}" style="${currentStyle === 'neon' ? 'background:linear-gradient(135deg,#4ab8dc,#2a7a9a);box-shadow:0 0 30px rgba(74,180,220,0.2);' : ''}">${avatar}</div>
+                        <div class="msg-avatar" style="background:${doc.factionColor}; ${currentStyle === 'neon' ? 'box-shadow:0 0 30px '+doc.factionColor+'40;' : ''}">${avatar}</div>
                         <span class="msg-author">${doc.factionShort} • Отдел кадров <span class="badge">${doc.factionShort}</span></span>
                         <span class="msg-timestamp">${doc.date} ${doc.time}</span>
                     </div>
@@ -1703,12 +2209,11 @@
                     <div class="msg-footer">Отдел кадров • ${doc.date} ${doc.time}</div>
                 </div>
             `;
-            previewContent.innerHTML = contentHTML;
             previewCard.classList.remove('hidden');
         }
 
         // ============================================================
-        // 16. ОТПРАВКА В DISCORD (с выбранным стилем)
+        // 15. ОТПРАВКА В DISCORD с разными стилями
         // ============================================================
         async function sendToDiscord() {
             if(!isLoggedIn) { showToast('⚠️ Авторизуйтесь','error'); return; }
@@ -1717,52 +2222,62 @@
             if(!url || !url.trim()) { showToast('⚠️ Webhook не настроен','error'); return; }
             const doc = buildDocument();
 
-            // Генерация сообщения в зависимости от стиля
+            // Разные стили сообщений для Discord
             let msg = '';
+            let embedColor = parseInt(doc.factionColor.replace('#',''), 16) || 0x4ab8dc;
+
             if (currentStyle === 'classic') {
-                msg = `**${doc.title}**\n\n📅 **Дата:** ${doc.date}\n\n🏛 **Фракция:** ${doc.faction}\n\n👤 **Кому:** ${doc.recipients}\n\n👤 **Должность:** ${doc.position}\n\n👤 **ФИО:** ${doc.fullName}\n\n\`\`\`text\n📌 Тема: ${doc.subject}\n\n📝 Текст:\n${doc.content}\n\`\`\``;
+                // Классический — строгий, с полями
+                msg = `**${doc.title}**\n\n📅 **Дата:** ${doc.date}\n🏛 **Фракция:** ${doc.faction}\n👤 **Кому:** ${doc.recipients}\n👤 **Должность:** ${doc.position}\n👤 **ФИО:** ${doc.fullName}\n\n📌 **Тема:** ${doc.subject}\n\n📝 **Текст:**\n\`\`\`\n${doc.content}\n\`\`\``;
             } else if (currentStyle === 'gradient') {
-                msg = `✨ **${doc.title}** ✨\n\n📅 **Дата:** ${doc.date}\n🏛 **Фракция:** ${doc.faction}\n👤 **Кому:** ${doc.recipients}\n👤 **Должность:** ${doc.position}\n👤 **ФИО:** ${doc.fullName}\n\n📌 **Тема:** ${doc.subject}\n\n📝 **Текст:**\n${doc.content}`;
-            } else { // neon
-                msg = `⚡ **${doc.title}** ⚡\n\n\`📅 Дата:\` ${doc.date}\n\`🏛 Фракция:\` ${doc.faction}\n\`👤 Кому:\` ${doc.recipients}\n\`👤 Должность:\` ${doc.position}\n\`👤 ФИО:\` ${doc.fullName}\n\n\`📌 Тема:\` ${doc.subject}\n\n\`📝 Текст:\`\n${doc.content}`;
+                // Градиент — с эмодзи и форматированием
+                msg = `✨ **${doc.title}** ✨\n\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n📅 **Дата:** ${doc.date}\n🏛 **Фракция:** ${doc.faction}\n👤 **Кому:** ${doc.recipients}\n👤 **Должность:** ${doc.position}\n👤 **ФИО:** ${doc.fullName}\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n📌 **Тема:** ${doc.subject}\n\n📝 **Текст:**\n> ${doc.content.replace(/\n/g, '\n> ')}`;
+            } else {
+                // Neon — яркий, с выделениями
+                msg = `⚡ **${doc.title}** ⚡\n\n\`📅 Дата:\` ${doc.date}\n\`🏛 Фракция:\` ${doc.faction}\n\`👤 Кому:\` ${doc.recipients}\n\`👤 Должность:\` ${doc.position}\n\`👤 ФИО:\` ${doc.fullName}\n\n**📌 Тема:** ${doc.subject}\n\n📝 **Текст:**\n\`\`\`ansi\n${doc.content}\n\`\`\``;
             }
 
-            const colors = { mo:0x2ecc71, mvd:0xe74c3c, sk:0x3498db, gov:0xf1c40f, proc:0x9b59b6, hosp:0x1abc9c, law:0xe67e22, mchs:0xe67e22, fsin:0x95a5a6 };
             const payload = {
                 content: `📄 **${doc.factionShort} • ${doc.title}**`,
                 embeds: [{
                     title: doc.title,
                     description: msg,
-                    color: colors[currentFaction] || 0x3498db,
+                    color: embedColor,
                     footer: { text: `Отдел кадров • ${doc.date} ${doc.time} | Стиль: ${currentStyle}` },
                     timestamp: new Date().toISOString()
                 }]
             };
+
             try {
                 publishBtn.disabled = true;
                 publishBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> ОТПРАВКА...';
                 const resp = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-                if(resp.ok) showToast('✅ Документ опубликован!','success');
-                else showToast('❌ Ошибка '+resp.status,'error');
+                if(resp.ok) {
+                    showToast('✅ Документ опубликован!','success');
+                    addAnalyticsRecord(doc);
+                } else showToast('❌ Ошибка '+resp.status,'error');
             } catch(e) { showToast('❌ '+e.message,'error'); }
             finally { publishBtn.disabled = false; publishBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> ОПУБЛИКОВАТЬ'; }
         }
 
         // ============================================================
-        // 17. ОЧИСТКА
+        // 16. ОЧИСТКА
         // ============================================================
         function clearAll() {
             docNumber.value='';
             docDate.value=getCurrentDate();
             subject.value='';
             content.value='';
-            recipientGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked=false; cb.closest('.checkbox-item').classList.remove('checked'); });
+            recipientGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.checked=false;
+                cb.closest('.checkbox-item').classList.remove('checked');
+            });
             document.querySelectorAll('.field-control').forEach(el => el.classList.remove('error'));
             recipientError.textContent='';
             previewContent.innerHTML = `
                 <div class="discord-msg style-${currentStyle}">
-                    <div style="color:#4a6f7f;text-align:center;padding:28px;font-family:'Inter',sans-serif;">
-                        <i class="fas fa-info-circle" style="font-size:24px;display:block;margin-bottom:10px;"></i>
+                    <div style="color:var(--text-muted);text-align:center;padding:28px;">
+                        <i class="fas fa-info-circle" style="font-size:22px;display:block;margin-bottom:10px;"></i>
                         Заполните все обязательные поля
                     </div>
                 </div>
@@ -1772,15 +2287,29 @@
         }
 
         // ============================================================
-        // 18. ЛОГИН / ЛОГАУТ
+        // 17. ЛОГИН / ЛОГАУТ
         // ============================================================
+        let selectedFaction = null;
+
+        factionItems.forEach(item => {
+            item.addEventListener('click', function() {
+                factionItems.forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedFaction = this.dataset.faction;
+                loginFaction.value = selectedFaction;
+                loginPassword.focus();
+            });
+        });
+
         function handleLogin() {
-            const faction = loginFaction.value;
+            const faction = loginFaction.value || selectedFaction;
             const pass = loginPassword.value.trim();
-            if(!pass) { loginMessage.textContent = '⚠️ Введите пароль!'; loginMessage.className = 'login-message error'; return; }
-            if(pass === PASSWORDS[faction]) {
+            if (!faction) { loginMessage.textContent = '⚠️ Выберите фракцию!'; loginMessage.className = 'login-message error'; return; }
+            if (!pass) { loginMessage.textContent = '⚠️ Введите пароль!'; loginMessage.className = 'login-message error'; return; }
+            if (pass === PASSWORDS[faction]) {
                 loginMessage.textContent = '✅ Доступ разрешён!'; loginMessage.className = 'login-message success';
                 currentFaction = faction; isLoggedIn = true;
+                currentUser = prompt('Введите ваше имя (для аналитики):', 'Сотрудник') || 'Сотрудник';
                 loginCard.classList.add('hidden'); mainCard.classList.remove('hidden');
                 updateUIForFaction();
                 docDate.value = getCurrentDate();
@@ -1797,17 +2326,40 @@
             isLoggedIn = false; currentFaction = null;
             mainCard.classList.add('hidden'); previewCard.classList.add('hidden'); loginCard.classList.remove('hidden');
             loginPassword.value = ''; loginMessage.textContent = '🔒 Вы вышли'; loginMessage.className = 'login-message error';
+            factionItems.forEach(i => i.classList.remove('selected'));
             showToast('🔒 Выход выполнен','success');
         }
 
         // ============================================================
-        // 19. СОБЫТИЯ
+        // 18. ТЕМА
+        // ============================================================
+        let darkTheme = true;
+        function toggleTheme() {
+            darkTheme = !darkTheme;
+            document.documentElement.setAttribute('data-theme', darkTheme ? 'dark' : 'light');
+            themeToggle.innerHTML = darkTheme ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            localStorage.setItem('formyla_theme', darkTheme ? 'dark' : 'light');
+        }
+
+        // ============================================================
+        // 19. ГОРЯЧИЕ КЛАВИШИ
+        // ============================================================
+        document.addEventListener('keydown', (e) => {
+            if (!isLoggedIn) return;
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); sendToDiscord(); }
+            if (e.ctrlKey && e.key === 'p') { e.preventDefault(); if(!validateFields()) { showToast('⚠️ Заполните поля','error'); return; } renderPreview(); }
+            if (e.ctrlKey && e.key === 's') { e.preventDefault(); saveCurrentAsTemplate(); }
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') { e.preventDefault(); clearAll(); }
+            if (e.key === 'Escape') { previewCard.classList.add('hidden'); }
+        });
+
+        // ============================================================
+        // 20. СОБЫТИЯ
         // ============================================================
         loginBtn.addEventListener('click', handleLogin);
         loginPassword.addEventListener('keydown', e => { if(e.key==='Enter') handleLogin(); });
         logoutBtn.addEventListener('click', handleLogout);
 
-        // Чекбоксы
         recipientGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
             cb.addEventListener('change', function() {
                 const label = this.closest('.checkbox-item');
@@ -1816,32 +2368,54 @@
             });
         });
 
-        // Вкладки
         tabBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 tabBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 const tab = this.dataset.tab;
                 tabMain.classList.toggle('active', tab==='main');
+                tabAnalytics.classList.toggle('active', tab==='analytics');
+                tabTemplates.classList.toggle('active', tab==='templates');
                 tabSettings.classList.toggle('active', tab==='settings');
                 tabStyles.classList.toggle('active', tab==='styles');
+                if (tab === 'analytics') updateAnalytics();
+                if (tab === 'templates') renderTemplates();
             });
         });
 
-        // Стили
         styleBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 styleBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 currentStyle = this.dataset.style;
-                if (previewCard.classList.contains('hidden') === false) {
-                    renderPreview();
-                }
+                if (!previewCard.classList.contains('hidden')) renderPreview();
                 showToast('🎨 Стиль: '+this.textContent.trim(), 'success');
             });
         });
 
-        // Добавление
+        themeToggle.addEventListener('click', toggleTheme);
+        const savedTheme = localStorage.getItem('formyla_theme');
+        if (savedTheme === 'light') { darkTheme = false; toggleTheme(); }
+
+        periodBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                periodBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                statsPeriod = this.dataset.period;
+                updateAnalytics();
+            });
+        });
+
+        aiGenerateBtn.addEventListener('click', generateAI);
+        aiImproveBtn.addEventListener('click', improveStyle);
+        aiCheckBtn.addEventListener('click', checkSpelling);
+        aiPrompt.addEventListener('keydown', e => { if (e.ctrlKey && e.key === 'Enter') generateAI(); });
+
+        saveTemplateBtn.addEventListener('click', saveCurrentAsTemplate);
+        showAllTemplates.addEventListener('click', () => { filterTemplates = 'all'; renderTemplates(); });
+        showPublicTemplates.addEventListener('click', () => { filterTemplates = 'public'; renderTemplates(); });
+        showPrivateTemplates.addEventListener('click', () => { filterTemplates = 'private'; renderTemplates(); });
+
         addDocTypeBtn.addEventListener('click', ()=>addToList(newDocType,'docTypes','✅ Тип добавлен'));
         newDocType.addEventListener('keydown', e => { if(e.key==='Enter') addDocTypeBtn.click(); });
         addPositionBtn.addEventListener('click', ()=>addToList(newPosition,'positions','✅ Должность добавлена'));
@@ -1849,7 +2423,6 @@
         addFullNameBtn.addEventListener('click', ()=>addToList(newFullName,'fullNames','✅ ФИО добавлено'));
         newFullName.addEventListener('keydown', e => { if(e.key==='Enter') addFullNameBtn.click(); });
 
-        // Кнопки
         previewBtn.addEventListener('click', ()=>{
             if(!isLoggedIn) { showToast('⚠️ Авторизуйтесь','error'); return; }
             if(!validateFields()) { showToast('⚠️ Заполните поля','error'); return; }
@@ -1858,23 +2431,31 @@
         publishBtn.addEventListener('click', sendToDiscord);
         clearBtn.addEventListener('click', clearAll);
 
-        // Снять ошибки
         document.querySelectorAll('#mainCard .field-control').forEach(el => {
             el.addEventListener('input', function(){ if(this.classList.contains('error')) this.classList.remove('error'); });
             el.addEventListener('change', function(){ if(this.classList.contains('error')) this.classList.remove('error'); });
         });
 
         // ============================================================
-        // 20. ИНИЦИАЛИЗАЦИЯ
+        // 21. ИНИЦИАЛИЗАЦИЯ
         // ============================================================
-        async function init() {
-            await loadFromGist();
-            docDate.value = getCurrentDate();
-            console.log('📄 Formyla Pro v.9 · Облачная БД (Gist)');
-            console.log('🔑 Пароли:', PASSWORDS);
-            // Если есть сохранённая сессия — можно восстановить
+        docDate.value = getCurrentDate();
+        // Восстановление данных
+        for (const f in DEFAULT_LISTS) {
+            const saved = localStorage.getItem('formyla_lists_' + f);
+            if (saved) {
+                try { DEFAULT_LISTS[f] = JSON.parse(saved); } catch(e) {}
+            }
         }
-        init();
+
+        console.log('📄 Formyla Pro v.11');
+        console.log('🔑 Пароли:', PASSWORDS);
+        console.log('⌨️ Горячие клавиши:');
+        console.log('  Ctrl+Enter — публикация');
+        console.log('  Ctrl+P — предпросмотр');
+        console.log('  Ctrl+S — сохранить шаблон');
+        console.log('  Ctrl+Shift+C — очистить');
+        console.log('  Escape — закрыть предпросмотр');
     })();
 </script>
 </body>
