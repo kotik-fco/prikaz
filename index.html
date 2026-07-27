@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Генератор документов | Formyla</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Формила · Генератор документов</title>
+    <!-- Font Awesome 6 (free) для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -12,78 +14,113 @@
         }
 
         body {
-            background: #0a0e14;
+            background: #0b1119;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            padding: 20px;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            padding: 24px;
+            color: #eaf0f5;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 24px;
         }
 
+        /* карточки — стекло */
         .card {
-            background: #111820;
-            border-radius: 24px;
-            padding: 32px 30px;
-            border: 1px solid #26333d;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px #1f2f3a inset;
-            transition: all 0.3s;
+            background: rgba(18, 28, 40, 0.75);
+            backdrop-filter: blur(4px);
+            border-radius: 32px;
+            padding: 32px 34px;
+            border: 1px solid rgba(68, 128, 160, 0.25);
+            box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(60, 120, 150, 0.15) inset;
+            transition: all 0.25s;
         }
 
         .card.hidden {
             display: none;
         }
 
+        /* хедер */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #1f313b;
+            border-bottom: 1px solid rgba(60, 120, 150, 0.2);
             padding-bottom: 18px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             flex-wrap: wrap;
             gap: 12px;
         }
 
         .title {
-            color: #9fc8d9;
-            font-family: 'Courier New', monospace;
-            font-size: 22px;
+            color: #b6dae8;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .title .badge {
-            background: #1a2f3a;
-            padding: 2px 12px;
-            border-radius: 40px;
-            font-size: 13px;
-            color: #6fa3b5;
-            border: 1px solid #2a4857;
+            background: #1c3345;
+            padding: 4px 16px;
+            border-radius: 60px;
+            font-size: 14px;
+            color: #6ea3bb;
+            border: 1px solid #2e5268;
+            font-weight: 500;
         }
 
-        .title .lock-icon {
+        .title i {
             color: #f5c27a;
+            font-size: 26px;
         }
 
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 18px;
+            border-radius: 60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            background: #1c3345;
+            border: 1px solid #2e5268;
+            color: #b6dae8;
+        }
+
+        .status-tag i {
+            font-size: 16px;
+        }
+
+        .faction-mo { border-color: #2ecc71; color: #2ecc71; background: #0f2e1e; }
+        .faction-mvd { border-color: #e74c3c; color: #e74c3c; background: #2e1414; }
+        .faction-sk { border-color: #3498db; color: #3498db; background: #142636; }
+        .faction-gov { border-color: #f1c40f; color: #f1c40f; background: #2e2a12; }
+        .faction-proc { border-color: #9b59b6; color: #9b59b6; background: #261a30; }
+        .faction-hosp { border-color: #1abc9c; color: #1abc9c; background: #112a24; }
+        .faction-law { border-color: #e67e22; color: #e67e22; background: #2e1e12; }
+        .faction-mchs { border-color: #f39c12; color: #f39c12; background: #2e2212; }
+        .faction-fsin { border-color: #95a5a6; color: #95a5a6; background: #1a2224; }
+
+        /* сетка полей */
         .fields-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px 20px;
+            gap: 18px 24px;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
             .fields-grid {
                 grid-template-columns: 1fr;
             }
@@ -92,7 +129,7 @@
         .field {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .field.full {
@@ -100,61 +137,63 @@
         }
 
         .field-label {
-            color: #7a9aa8;
-            font-size: 11px;
+            color: #89b2c4;
+            font-size: 12px;
             font-weight: 600;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             text-transform: uppercase;
-            font-family: 'Courier New', monospace;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .field-label .required {
-            color: #e8827a;
-            margin-left: 4px;
+            color: #f28b82;
+            margin-left: 2px;
         }
 
         .field-control {
-            background: #0e161e;
-            border: 1px solid #21343f;
-            border-radius: 10px;
-            padding: 10px 14px;
-            color: #dcecf5;
-            font-size: 14px;
-            font-family: 'Segoe UI', sans-serif;
+            background: #0e1822;
+            border: 1px solid #294252;
+            border-radius: 14px;
+            padding: 12px 16px;
+            color: #eaf0f5;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
             outline: none;
-            transition: border-color 0.25s, box-shadow 0.25s;
+            transition: border-color 0.2s, box-shadow 0.2s;
             width: 100%;
             appearance: none;
             -webkit-appearance: none;
         }
 
         .field-control:focus {
-            border-color: #4a8aa0;
-            box-shadow: 0 0 0 3px rgba(74, 138, 160, 0.15);
+            border-color: #4a9fc0;
+            box-shadow: 0 0 0 4px rgba(74, 159, 192, 0.15);
         }
 
         .field-control.error {
-            border-color: #8a3a3a;
-            box-shadow: 0 0 0 3px rgba(138, 58, 58, 0.2);
+            border-color: #b1544a;
+            box-shadow: 0 0 0 4px rgba(177, 84, 74, 0.2);
         }
 
         select.field-control {
             cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236a9aaa' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath d='M1 2l6 6 6-6' stroke='%236ea3bb' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 36px;
+            background-position: right 16px center;
+            padding-right: 44px;
         }
 
         select.field-control option {
-            background: #111820;
-            color: #dcecf5;
+            background: #0e1822;
+            color: #eaf0f5;
         }
 
         textarea.field-control {
             resize: vertical;
-            min-height: 120px;
-            font-family: 'Segoe UI', sans-serif;
+            min-height: 130px;
             line-height: 1.6;
         }
 
@@ -163,99 +202,151 @@
             cursor: not-allowed;
         }
 
+        /* чекбоксы — красиво */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            padding-top: 4px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cde0e8;
+            font-size: 14px;
+            cursor: pointer;
+            background: #0e1822;
+            padding: 6px 18px 6px 14px;
+            border-radius: 60px;
+            border: 1px solid #294252;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .checkbox-item:hover {
+            border-color: #4a9fc0;
+            background: #162837;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #4a9fc0;
+            cursor: pointer;
+        }
+
+        .checkbox-item.checked {
+            border-color: #4a9fc0;
+            background: #1a3345;
+            box-shadow: 0 0 0 1px #4a9fc0;
+        }
+
+        .error-message {
+            color: #f28b82;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            min-height: 20px;
+            padding-top: 2px;
+        }
+
+        /* кнопки */
         .btn-group {
             display: flex;
-            gap: 12px;
-            margin-top: 18px;
+            gap: 14px;
+            margin-top: 24px;
             flex-wrap: wrap;
         }
 
         .btn {
-            background: #1a3340;
-            border: 1px solid #2f5465;
-            color: #c4e4f0;
-            padding: 13px 28px;
-            border-radius: 40px;
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
+            background: #1c3345;
+            border: 1px solid #2e5268;
+            color: #cde0e8;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
             cursor: pointer;
-            transition: all 0.25s;
-            flex: 1;
-            text-transform: uppercase;
-            display: flex;
+            transition: all 0.2s;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            min-width: 120px;
+            gap: 12px;
+            flex: 1;
+            min-width: 140px;
+            text-transform: uppercase;
         }
 
         .btn:hover:not(:disabled) {
-            background: #234a5a;
-            border-color: #4a8aa0;
-            box-shadow: 0 0 30px rgba(74, 138, 160, 0.15);
-            transform: translateY(-1px);
+            background: #264b62;
+            border-color: #4a9fc0;
+            box-shadow: 0 0 30px rgba(74, 159, 192, 0.15);
+            transform: translateY(-2px);
         }
 
         .btn:active:not(:disabled) {
-            transform: scale(0.98);
+            transform: scale(0.96);
         }
 
         .btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
+            transform: none;
         }
 
         .btn .icon {
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .btn.publish {
-            background: #1a3a2a;
-            border-color: #2a6a3a;
-            color: #90d0a0;
+            background: #1a4030;
+            border-color: #2a7a4a;
+            color: #8dd4b0;
         }
 
         .btn.publish:hover:not(:disabled) {
-            background: #1a4a2a;
-            border-color: #3a8a4a;
+            background: #1f553a;
+            border-color: #3a9a5a;
         }
 
         .btn.secondary {
-            background: #1a1a2a;
-            border-color: #2a2a5a;
-            color: #9090d0;
-            flex: 0.5;
+            background: #1a1f30;
+            border-color: #2a3a5a;
+            color: #90b0d0;
+            flex: 0.6;
         }
 
         .btn.secondary:hover:not(:disabled) {
-            background: #2a2a3a;
-            border-color: #4a4a7a;
+            background: #242f4a;
+            border-color: #4a6a8a;
         }
 
         .btn.login {
-            background: #1a3a3a;
-            border-color: #2a5a5a;
-            color: #90d0d0;
+            background: #1a3845;
+            border-color: #2a5a6a;
+            color: #8dc8d8;
         }
 
         .btn.login:hover:not(:disabled) {
-            background: #1a4a4a;
-            border-color: #3a7a7a;
+            background: #1f4a5a;
+            border-color: #3a7a8a;
         }
 
         .btn.small {
-            padding: 6px 14px;
-            font-size: 12px;
+            padding: 8px 18px;
+            font-size: 13px;
             flex: 0 1 auto;
             min-width: auto;
+            gap: 6px;
         }
 
         .btn.danger {
             background: #2a1a1a;
             border-color: #5a2a2a;
-            color: #e8827a;
+            color: #f28b82;
         }
 
         .btn.danger:hover:not(:disabled) {
@@ -274,174 +365,359 @@
             border-color: #3a7a4a;
         }
 
-        .preview-card {
-            background: #0e161f;
-            border: 1px solid #1f323d;
-            border-radius: 14px;
-            padding: 18px 20px;
-            margin-top: 10px;
-        }
-
-        .preview-card .preview-title {
-            color: #6f98a8;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-bottom: 1px solid #1a2e3a;
-            padding-bottom: 10px;
-            margin-bottom: 12px;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1a3340;
-            border: 1px solid #4a8aa0;
-            color: #cce2ec;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-            z-index: 999;
-            max-width: 90%;
-            text-align: center;
-        }
-
-        .toast.show {
-            opacity: 1;
-        }
-
-        .toast.error {
-            border-color: #8a3a3a;
-            background: #2a1a1a;
-        }
-
-        .toast.success {
-            border-color: #3a8a4a;
-            background: #1a2a1a;
-        }
-
-        .status-tag {
-            display: inline-block;
-            padding: 1px 12px;
-            border-radius: 40px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            font-weight: 600;
-            vertical-align: middle;
-        }
-
-        .faction-mo { color: #6fd6b8; border: 1px solid #2b6a5c; background: #0f2e2a; }
-        .faction-mvd { color: #e8827a; border: 1px solid #7a3a3a; background: #2e1818; }
-        .faction-sk { color: #8ab8d4; border: 1px solid #2a4a6a; background: #18222e; }
-        .faction-gov { color: #f5c27a; border: 1px solid #7a6a3a; background: #2e2818; }
-        .faction-proc { color: #c4a0d4; border: 1px solid #5a3a7a; background: #22182e; }
-        .faction-hosp { color: #7ad4c0; border: 1px solid #2a5a4a; background: #1a2a2a; }
-        .faction-law { color: #d4a0c4; border: 1px solid #5a2a4a; background: #2a1a2a; }
-        .faction-mchs { color: #f0a070; border: 1px solid #7a4a2a; background: #2a1a0a; }
-        .faction-fsin { color: #a0a0c0; border: 1px solid #4a4a5a; background: #1a1a2a; }
-
+        /* webhook статус */
         .webhook-section {
-            background: #0a121a;
-            border: 1px solid #1a2a3a;
-            border-radius: 10px;
-            padding: 14px 16px;
-            margin-top: 12px;
+            background: #0a141e;
+            border: 1px solid #1a2f3f;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        .webhook-section .label {
-            color: #5d8b9a;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
+        .webhook-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
         }
 
-        .webhook-section .status {
-            display: inline-block;
-            padding: 2px 12px;
-            border-radius: 40px;
-            font-size: 12px;
-            font-family: 'Courier New', monospace;
-            margin-left: 8px;
+        .webhook-status .status {
+            padding: 4px 16px;
+            border-radius: 60px;
+            font-size: 13px;
+            font-weight: 600;
         }
 
-        .webhook-section .status.ready {
+        .status.ready {
             color: #6fd6b8;
             border: 1px solid #2b6a5c;
             background: #0f2e2a;
         }
-
-        .webhook-section .status.waiting {
+        .status.waiting {
             color: #f5c27a;
             border: 1px solid #7a6a3a;
             background: #2e2818;
         }
 
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding-top: 4px;
+        /* список настроек (вкладка) */
+        .list-settings {
+            background: #0a141e;
+            border: 1px solid #1a2f3f;
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
         }
 
-        .checkbox-item {
+        .list-settings:last-child {
+            margin-bottom: 0;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .list-title {
+            color: #89b2c4;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            color: #cce2ec;
-            font-size: 13px;
+            gap: 8px;
+        }
+
+        .list-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .list-controls input {
+            background: #0e1822;
+            border: 1px solid #294252;
+            border-radius: 10px;
+            padding: 8px 14px;
+            color: #eaf0f5;
+            font-size: 14px;
+            outline: none;
+            width: 200px;
+            max-width: 100%;
+        }
+
+        .list-controls input:focus {
+            border-color: #4a9fc0;
+        }
+
+        .list-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .list-item-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #142838;
+            border: 1px solid #294252;
+            border-radius: 60px;
+            padding: 4px 12px 4px 18px;
+            font-size: 14px;
+            color: #cde0e8;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .list-item-tag .remove-btn {
+            background: none;
+            border: none;
+            color: #7a9aaa;
             cursor: pointer;
-            background: #0e161e;
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid #21343f;
+            font-size: 16px;
+            padding: 0 4px;
+            transition: color 0.2s;
+        }
+
+        .list-item-tag .remove-btn:hover {
+            color: #f28b82;
+        }
+
+        .empty-text {
+            color: #3d6378;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        /* вкладки */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #1a2f3f;
+            padding-bottom: 6px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: #6a8f9f;
+            padding: 8px 22px;
+            border-radius: 60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.2s;
+            letter-spacing: 0.3px;
         }
 
-        .checkbox-item:hover {
-            border-color: #4a8aa0;
-            background: #16242e;
+        .tab-btn:hover {
+            color: #b6dae8;
+            background: #1a2f3f;
         }
 
-        .checkbox-item input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: #4a8aa0;
-            cursor: pointer;
+        .tab-btn.active {
+            background: #1c3345;
+            color: #cde0e8;
+            box-shadow: 0 0 0 1px #2e5268;
         }
 
-        .checkbox-item.checked {
-            border-color: #4a8aa0;
-            background: #162a36;
+        .tab-content {
+            display: none;
+            animation: fade 0.25s ease;
         }
 
-        .login-error {
-            color: #e8827a;
-            font-size: 13px;
-            font-family: 'Courier New', monospace;
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fade {
+            0% { opacity: 0.4; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .field-with-settings {
+            border-bottom: 1px solid #1a2f3f;
+            padding-bottom: 18px;
+            margin-bottom: 18px;
+        }
+        .field-with-settings:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        /* предпросмотр */
+        .preview-card {
+            background: #0a141e;
+            border: 1px solid #1a2f3f;
+            border-radius: 20px;
+            padding: 20px 24px;
             margin-top: 8px;
-            min-height: 20px;
-            text-align: center;
         }
 
-        .login-success {
-            color: #6fd6b8;
+        .preview-title {
+            color: #6a8f9f;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
-            font-family: 'Courier New', monospace;
-            margin-top: 8px;
-            min-height: 20px;
-            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #1a2f3f;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        .discord-message {
+            background: #0f1a24;
+            border-radius: 16px;
+            padding: 18px 22px;
+            border-left: 4px solid #4a9fc0;
+        }
+
+        .discord-message .msg-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .discord-message .msg-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .discord-message .msg-author {
+            color: #eaf0f5;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .discord-message .msg-author .author-badge {
+            background: #1a2f3f;
+            color: #89b2c4;
+            font-size: 12px;
+            padding: 2px 12px;
+            border-radius: 60px;
+            margin-left: 8px;
+            font-weight: 400;
+        }
+        .discord-message .msg-timestamp {
+            color: #5a7f8f;
+            font-size: 13px;
+        }
+        .discord-message .msg-content {
+            color: #eaf0f5;
+            font-size: 15px;
+            line-height: 1.7;
+            padding-left: 48px;
+        }
+        .discord-message .msg-content .doc-title {
+            font-weight: 700;
+            color: #f5c27a;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 17px;
+        }
+        .discord-message .msg-content .field-line {
+            display: block;
+        }
+        .discord-message .msg-content .field-label {
+            color: #7a9aa8;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        .discord-message .msg-content .field-value {
+            color: #eaf0f5;
+        }
+        .discord-message .msg-content .divider {
+            border: none;
+            border-top: 1px solid #1a2f3f;
+            margin: 10px 0;
+        }
+        .discord-message .msg-content .text-block {
+            background: #0a141e;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin: 8px 0 4px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #cde0e8;
+            border-left: 3px solid #4a9fc0;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .discord-message .msg-footer {
+            color: #4a6f7f;
+            font-size: 13px;
+            padding-left: 48px;
+            margin-top: 6px;
+        }
+
+        /* toast */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1c3345;
+            border: 1px solid #4a9fc0;
+            color: #cde0e8;
+            padding: 14px 34px;
+            border-radius: 60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+            z-index: 999;
+            max-width: 92%;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+        .toast.error {
+            border-color: #b1544a;
+            background: #2a1a1a;
+        }
+        .toast.success {
+            border-color: #3a8a4a;
+            background: #1a2a1a;
+        }
+
+        /* пароль */
         .password-input-group {
             display: flex;
-            gap: 12px;
+            gap: 14px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -450,12 +726,11 @@
             flex: 1;
             min-width: 200px;
         }
-
         .password-input-group .btn {
             flex: 0 1 auto;
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 520px) {
             .password-input-group {
                 flex-direction: column;
             }
@@ -465,287 +740,49 @@
             .password-input-group .btn {
                 width: 100%;
             }
+            .btn-group .btn {
+                flex: 1 1 100%;
+            }
         }
 
-        .discord-message {
-            background: #0f151a;
-            border-radius: 12px;
-            padding: 16px 20px;
-            border-left: 4px solid #4a8aa0;
-            margin-top: 12px;
+        .login-message {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            min-height: 28px;
+            text-align: center;
+            padding-top: 8px;
+        }
+        .login-message.error {
+            color: #f28b82;
+        }
+        .login-message.success {
+            color: #6fd6b8;
         }
 
-        .discord-message .msg-header {
+        /* иконки */
+        .icon-text {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
-
-        .discord-message .msg-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #4a8aa0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: 700;
-            color: #fff;
-            flex-shrink: 0;
-        }
-
-        .discord-message .msg-avatar.faction-mo { background: #2ecc71; }
-        .discord-message .msg-avatar.faction-mvd { background: #e74c3c; }
-        .discord-message .msg-avatar.faction-sk { background: #3498db; }
-        .discord-message .msg-avatar.faction-gov { background: #f1c40f; color: #1a1a1a; }
-        .discord-message .msg-avatar.faction-proc { background: #9b59b6; }
-        .discord-message .msg-avatar.faction-hosp { background: #1abc9c; }
-        .discord-message .msg-avatar.faction-law { background: #e67e22; }
-        .discord-message .msg-avatar.faction-mchs { background: #e67e22; }
-        .discord-message .msg-avatar.faction-fsin { background: #95a5a6; }
-
-        .discord-message .msg-author {
-            color: #dcecf5;
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .discord-message .msg-author .author-badge {
-            background: #2a3a4a;
-            color: #8ab8d4;
-            font-size: 11px;
-            padding: 1px 8px;
-            border-radius: 12px;
-            margin-left: 6px;
-            font-weight: 400;
-        }
-
-        .discord-message .msg-timestamp {
-            color: #5d8b9a;
-            font-size: 12px;
-        }
-
-        .discord-message .msg-content {
-            color: #dcecf5;
-            font-size: 15px;
-            line-height: 1.7;
-            white-space: pre-wrap;
-            word-break: break-word;
-            padding-left: 42px;
-        }
-
-        .discord-message .msg-content .doc-title {
-            font-weight: 700;
-            color: #f5c27a;
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .discord-message .msg-content .field-line {
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        .discord-message .msg-content .field-label {
-            color: #7a9aa8;
-            font-size: 13px;
-            font-weight: 400;
-            text-transform: none;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .discord-message .msg-content .field-value {
-            color: #dcecf5;
-        }
-
-        .discord-message .msg-content .divider {
-            border: none;
-            border-top: 1px solid #1a2a3a;
-            margin: 8px 0;
-        }
-
-        .discord-message .msg-content .text-block {
-            background: #0a121a;
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin: 6px 0 4px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            color: #cce2ec;
-            border-left: 3px solid #4a8aa0;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        .discord-message .msg-footer {
-            color: #3d5a68;
-            font-size: 12px;
-            padding-left: 42px;
-            margin-top: 4px;
-        }
-
-        .list-settings {
-            background: #0a121a;
-            border: 1px solid #1a2a3a;
-            border-radius: 10px;
-            padding: 14px 16px;
-            margin-top: 6px;
-        }
-
-        .list-settings .list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .list-settings .list-title {
-            color: #5d8b9a;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .list-settings .list-controls {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .list-settings .list-controls input {
-            background: #0e161e;
-            border: 1px solid #21343f;
-            border-radius: 8px;
-            padding: 6px 12px;
-            color: #dcecf5;
-            font-size: 13px;
-            outline: none;
-            width: 180px;
-            max-width: 100%;
-        }
-
-        .list-settings .list-controls input:focus {
-            border-color: #4a8aa0;
-        }
-
-        .list-settings .list-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 6px;
-        }
-
-        .list-settings .list-item-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: #14242e;
-            border: 1px solid #21343f;
-            border-radius: 20px;
-            padding: 3px 10px 3px 14px;
-            font-size: 13px;
-            color: #cce2ec;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .list-settings .list-item-tag .remove-btn {
-            background: none;
-            border: none;
-            color: #5d8b9a;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 0 2px;
-            transition: color 0.2s;
-        }
-
-        .list-settings .list-item-tag .remove-btn:hover {
-            color: #e8827a;
-        }
-
-        .list-settings .empty-text {
-            color: #2f4d5c;
-            font-size: 13px;
-            font-style: italic;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: #0a121a;
-            border: 1px solid #1a2a3a;
-            color: #5d8b9a;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .tab-btn:hover {
-            border-color: #3a5a6a;
-            color: #9fc8d9;
-        }
-
-        .tab-btn.active {
-            background: #1a3340;
-            border-color: #4a8aa0;
-            color: #cce2ec;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .field-with-settings {
-            border-bottom: 1px solid #1a2a3a;
-            padding-bottom: 14px;
-            margin-bottom: 14px;
-        }
-
-        .field-with-settings:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
         }
     </style>
 </head>
 <body>
-
 <div class="container">
-
-    <!-- ======== ВХОД ПО ПАРОЛЮ ======== -->
+    <!-- КАРТОЧКА ВХОДА -->
     <div class="card" id="loginCard">
         <div class="header">
             <div class="title">
-                <span class="lock-icon">🔒</span> ДОСТУП К ГЕНЕРАТОРУ
+                <i class="fas fa-lock"></i> ДОСТУП
                 <span class="badge">Formyla</span>
             </div>
-            <div style="color: #5d8b9a; font-family: 'Courier New', monospace; font-size: 13px;">
-                ⚡ Введите пароль фракции
+            <div style="color: #6a8f9f; font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+                <i class="fas fa-key"></i> пароль фракции
             </div>
         </div>
-
         <div class="fields-grid">
             <div class="field full">
-                <span class="field-label">▸ Выберите фракцию <span class="required">*</span></span>
+                <span class="field-label"><i class="fas fa-flag"></i> Фракция <span class="required">*</span></span>
                 <select id="loginFaction" class="field-control">
                     <option value="mo">Министерство Обороны (МО)</option>
                     <option value="mvd">Министерство Внутренних Дел (МВД)</option>
@@ -759,158 +796,121 @@
                 </select>
             </div>
             <div class="field full">
-                <span class="field-label">▸ Пароль <span class="required">*</span></span>
+                <span class="field-label"><i class="fas fa-lock"></i> Пароль <span class="required">*</span></span>
                 <div class="password-input-group">
                     <input type="password" id="loginPassword" class="field-control" placeholder="Введите пароль фракции" />
                     <button class="btn login" id="loginBtn">
-                        <span class="icon">🔑</span> ВОЙТИ
+                        <i class="fas fa-sign-in-alt"></i> ВОЙТИ
                     </button>
                 </div>
-                <div id="loginMessage" class="login-error"></div>
+                <div id="loginMessage" class="login-message"></div>
             </div>
         </div>
     </div>
 
-    <!-- ======== ОСНОВНОЙ ГЕНЕРАТОР ======== -->
+    <!-- ОСНОВНАЯ КАРТОЧКА -->
     <div class="card hidden" id="mainCard">
         <div class="header">
             <div class="title">
-                📄 ГЕНЕРАТОР ДОКУМЕНТОВ
+                <i class="fas fa-file-alt"></i> ГЕНЕРАТОР ДОКУМЕНТОВ
                 <span class="badge" id="factionBadge">МО</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                <button class="btn secondary" id="logoutBtn" style="flex: 0; padding: 6px 18px; font-size: 12px;">
-                    <span class="icon">🚪</span> ВЫЙТИ
+            <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+                <button class="btn secondary" id="logoutBtn" style="padding: 6px 18px; font-size: 13px; flex: 0;">
+                    <i class="fas fa-sign-out-alt"></i> ВЫЙТИ
                 </button>
-                <span class="status-tag" id="factionTag">МО</span>
+                <span class="status-tag" id="factionTag"><i class="fas fa-shield-alt"></i> МО</span>
             </div>
         </div>
 
         <!-- Вкладки -->
         <div class="tabs">
-            <button class="tab-btn active" data-tab="main">📝 Основное</button>
-            <button class="tab-btn" data-tab="settings">⚙️ Настройки списков</button>
+            <button class="tab-btn active" data-tab="main"><i class="fas fa-pen"></i> Основное</button>
+            <button class="tab-btn" data-tab="settings"><i class="fas fa-sliders-h"></i> Настройки</button>
         </div>
 
-        <!-- ======== ВКЛАДКА: ОСНОВНОЕ ======== -->
+        <!-- Вкладка: Основное -->
         <div class="tab-content active" id="tab-main">
             <div class="fields-grid">
                 <div class="field">
-                    <span class="field-label">▸ Фракция</span>
-                    <input type="text" id="currentFactionDisplay" class="field-control" disabled style="opacity: 0.7;" />
+                    <span class="field-label"><i class="fas fa-flag"></i> Фракция</span>
+                    <input type="text" id="currentFactionDisplay" class="field-control" disabled style="opacity:0.7;" />
                 </div>
-
                 <div class="field">
-                    <span class="field-label">▸ Тип документа <span class="required">*</span></span>
-                    <select id="docType" class="field-control">
-                    </select>
+                    <span class="field-label"><i class="fas fa-tag"></i> Тип документа <span class="required">*</span></span>
+                    <select id="docType" class="field-control"></select>
                 </div>
-
                 <div class="field">
-                    <span class="field-label">▸ Номер документа</span>
-                    <input type="text" id="docNumber" class="field-control" placeholder="Например: 001" value="" />
+                    <span class="field-label"><i class="fas fa-hashtag"></i> Номер</span>
+                    <input type="text" id="docNumber" class="field-control" placeholder="№ 001" value="" />
                 </div>
-
                 <div class="field">
-                    <span class="field-label">▸ Дата <span class="required">*</span></span>
+                    <span class="field-label"><i class="fas fa-calendar-day"></i> Дата <span class="required">*</span></span>
                     <input type="date" id="docDate" class="field-control" />
                 </div>
-
                 <div class="field full">
-                    <span class="field-label">▸ Кому адресован документ <span class="required">*</span></span>
+                    <span class="field-label"><i class="fas fa-users"></i> Кому адресован <span class="required">*</span></span>
                     <div class="checkbox-group" id="recipientGroup">
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="Личному составу" /> Личному составу
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="Отделу кадров" /> Отделу кадров
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="Оперативному отделу" /> Оперативному отделу
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="Аналитическому отделу" /> Аналитическому отделу
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="Юридическому отделу" /> Юридическому отделу
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="Финансовому отделу" /> Финансовому отделу
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="Отделу безопасности" /> Отделу безопасности
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="Административному отделу" /> Административному отделу
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="Отделу логистики" /> Отделу логистики
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="Секретариату" /> Секретариату
-                        </label>
+                        <label class="checkbox-item"><input type="checkbox" value="Личному составу" /> Личному составу</label>
+                        <label class="checkbox-item"><input type="checkbox" value="Отделу кадров" /> Отделу кадров</label>
+                        <label class="checkbox-item"><input type="checkbox" value="Оперативному отделу" /> Оперативному отделу</label>
+                        <label class="checkbox-item"><input type="checkbox" value="Аналитическому отделу" /> Аналитическому отделу</label>
+                        <label class="checkbox-item"><input type="checkbox" value="Юридическому отделу" /> Юридическому отделу</label>
+                        <label class="checkbox-item"><input type="checkbox" value="Финансовому отделу" /> Финансовому отделу</label>
+                        <label class="checkbox-item"><input type="checkbox" value="Отделу безопасности" /> Отделу безопасности</label>
+                        <label class="checkbox-item"><input type="checkbox" value="Административному отделу" /> Административному отделу</label>
+                        <label class="checkbox-item"><input type="checkbox" value="Отделу логистики" /> Отделу логистики</label>
+                        <label class="checkbox-item"><input type="checkbox" value="Секретариату" /> Секретариату</label>
                     </div>
-                    <div style="color: #e8827a; font-size: 11px; font-family: 'Courier New', monospace; min-height: 16px;" id="recipientError"></div>
-                </div>
-
-                <div class="field">
-                    <span class="field-label">▸ Должность <span class="required">*</span></span>
-                    <select id="position" class="field-control">
-                    </select>
+                    <div id="recipientError" class="error-message"></div>
                 </div>
                 <div class="field">
-                    <span class="field-label">▸ ФИО <span class="required">*</span></span>
-                    <select id="fullName" class="field-control">
-                    </select>
+                    <span class="field-label"><i class="fas fa-briefcase"></i> Должность <span class="required">*</span></span>
+                    <select id="position" class="field-control"></select>
                 </div>
-
-                <div class="field full">
-                    <span class="field-label">▸ Тема документа <span class="required">*</span></span>
-                    <input type="text" id="subject" class="field-control" placeholder="Краткая тема документа" value="" />
+                <div class="field">
+                    <span class="field-label"><i class="fas fa-user"></i> ФИО <span class="required">*</span></span>
+                    <select id="fullName" class="field-control"></select>
                 </div>
-
                 <div class="field full">
-                    <span class="field-label">▸ Текст документа <span class="required">*</span></span>
+                    <span class="field-label"><i class="fas fa-heading"></i> Тема <span class="required">*</span></span>
+                    <input type="text" id="subject" class="field-control" placeholder="Краткая тема документа" />
+                </div>
+                <div class="field full">
+                    <span class="field-label"><i class="fas fa-align-left"></i> Текст <span class="required">*</span></span>
                     <textarea id="content" class="field-control" placeholder="Подробное описание..."></textarea>
                 </div>
             </div>
 
             <div class="webhook-section">
-                <div>
-                    <span class="label">📡 Webhook:</span>
-                    <span class="status" id="webhookStatus">⏳ Ожидание настройки</span>
+                <div class="webhook-status">
+                    <i class="fas fa-paper-plane" style="color:#6a8f9f;"></i>
+                    <span style="color:#89b2c4;">Webhook:</span>
+                    <span class="status" id="webhookStatus">⏳ Ожидание</span>
                 </div>
-                <div style="font-size: 12px; color: #3d5a68; margin-top: 4px;">
-                    Документ будет отправлен в канал выбранной фракции
-                </div>
+                <span style="font-size:13px; color:#4a6f7f;"><i class="fas fa-info-circle"></i> Отправка в канал фракции</span>
             </div>
 
             <div class="btn-group">
-                <button class="btn" id="previewBtn">
-                    <span class="icon">👁</span> ПРЕДПРОСМОТР
-                </button>
-                <button class="btn publish" id="publishBtn">
-                    <span class="icon">📤</span> ОПУБЛИКОВАТЬ
-                </button>
-                <button class="btn secondary" id="clearBtn">
-                    <span class="icon">🗑</span> ОЧИСТИТЬ
-                </button>
+                <button class="btn" id="previewBtn"><i class="fas fa-eye"></i> ПРЕДПРОСМОТР</button>
+                <button class="btn publish" id="publishBtn"><i class="fas fa-cloud-upload-alt"></i> ОПУБЛИКОВАТЬ</button>
+                <button class="btn secondary" id="clearBtn"><i class="fas fa-trash-alt"></i> ОЧИСТИТЬ</button>
             </div>
         </div>
 
-        <!-- ======== ВКЛАДКА: НАСТРОЙКИ ======== -->
+        <!-- Вкладка: Настройки -->
         <div class="tab-content" id="tab-settings">
-            <div style="color: #5d8b9a; font-size: 12px; font-family: 'Courier New', monospace; margin-bottom: 14px;">
-                📌 Настройки сохраняются для каждой фракции отдельно
+            <div style="color:#6a8f9f; font-size:13px; font-family:'JetBrains Mono',monospace; margin-bottom:20px;">
+                <i class="fas fa-database"></i> Настройки сохраняются для каждой фракции отдельно (localStorage)
             </div>
 
             <div class="field-with-settings">
                 <div class="list-settings">
                     <div class="list-header">
-                        <span class="list-title">📄 Типы документов</span>
+                        <span class="list-title"><i class="fas fa-tags"></i> Типы документов</span>
                         <div class="list-controls">
                             <input type="text" id="newDocType" placeholder="Новый тип..." />
-                            <button class="btn success small" id="addDocTypeBtn">+ Добавить</button>
+                            <button class="btn success small" id="addDocTypeBtn"><i class="fas fa-plus"></i> Добавить</button>
                         </div>
                     </div>
                     <div class="list-items" id="docTypeList"></div>
@@ -920,10 +920,10 @@
             <div class="field-with-settings">
                 <div class="list-settings">
                     <div class="list-header">
-                        <span class="list-title">👤 Должности</span>
+                        <span class="list-title"><i class="fas fa-briefcase"></i> Должности</span>
                         <div class="list-controls">
                             <input type="text" id="newPosition" placeholder="Новая должность..." />
-                            <button class="btn success small" id="addPositionBtn">+ Добавить</button>
+                            <button class="btn success small" id="addPositionBtn"><i class="fas fa-plus"></i> Добавить</button>
                         </div>
                     </div>
                     <div class="list-items" id="positionList"></div>
@@ -933,10 +933,10 @@
             <div class="field-with-settings">
                 <div class="list-settings">
                     <div class="list-header">
-                        <span class="list-title">👤 ФИО</span>
+                        <span class="list-title"><i class="fas fa-user"></i> ФИО</span>
                         <div class="list-controls">
-                            <input type="text" id="newFullName" placeholder="Иванов Иван Иванович" />
-                            <button class="btn success small" id="addFullNameBtn">+ Добавить</button>
+                            <input type="text" id="newFullName" placeholder="Иванов И.И." />
+                            <button class="btn success small" id="addFullNameBtn"><i class="fas fa-plus"></i> Добавить</button>
                         </div>
                     </div>
                     <div class="list-items" id="fullNameList"></div>
@@ -945,297 +945,154 @@
         </div>
     </div>
 
-    <!-- Предпросмотр -->
+    <!-- ПРЕДПРОСМОТР -->
     <div class="card hidden" id="previewCard">
-        <div class="header" style="margin-bottom: 12px; padding-bottom: 12px;">
-            <div style="color: #6f98a8; font-family: 'Courier New', monospace; font-size: 14px; font-weight: 600; letter-spacing: 1px;">
-                📋 ПРЕДПРОСМОТР (Discord стиль)
-            </div>
-            <span style="color: #3d5a68; font-size: 12px; font-family: 'Courier New', monospace;">
-                Заполните все поля
-            </span>
-        </div>
+        <div class="preview-title"><i class="fas fa-chevron-circle-right"></i> ПРЕДПРОСМОТР (Discord-стиль)</div>
         <div id="previewContent">
             <div class="discord-message">
-                <div style="color: #2f4d5c; text-align: center; padding: 20px;">
-                    Заполните все обязательные поля для предпросмотра...
+                <div style="color:#3d6378; text-align:center; padding:24px;">
+                    <i class="fas fa-info-circle" style="font-size:20px;"></i> Заполните все обязательные поля
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
-<div class="toast" id="toast">✅ Готово!</div>
+<!-- TOAST -->
+<div class="toast" id="toast">Готово</div>
 
 <script>
-    (function() {
-        // ============================================================
-        // 1. ПАРОЛИ ДЛЯ ФРАКЦИЙ
-        // ============================================================
+    (function(){
+        // ---------- ПАРОЛИ ----------
         const PASSWORDS = {
-            mo: '1234',
-            mvd: '5678',
-            sk: '9012',
-            gov: 'gov2024',
-            proc: '7890',
-            hosp: '1111',
-            law: '2222',
-            mchs: '3333',
-            fsin: '4444'
+            mo:'1234', mvd:'5678', sk:'9012', gov:'gov2024', proc:'7890',
+            hosp:'1111', law:'2222', mchs:'3333', fsin:'4444'
         };
 
-        // ============================================================
-        // 2. НАЗВАНИЯ ФРАКЦИЙ
-        // ============================================================
         const factionNames = {
-            mo: 'Министерство Обороны (МО)',
-            mvd: 'Министерство Внутренних Дел (МВД)',
-            sk: 'Следственный Комитет (СК)',
-            gov: 'Правительство',
-            proc: 'Прокуратура',
-            hosp: 'Больница / Медицина',
-            law: 'Адвокатура',
-            mchs: 'МЧС',
-            fsin: 'ФСИН'
+            mo:'Министерство Обороны (МО)', mvd:'Министерство Внутренних Дел (МВД)',
+            sk:'Следственный Комитет (СК)', gov:'Правительство', proc:'Прокуратура',
+            hosp:'Больница / Медицина', law:'Адвокатура', mchs:'МЧС', fsin:'ФСИН'
         };
-
-        const factionShort = {
-            mo: 'МО',
-            mvd: 'МВД',
-            sk: 'СК',
-            gov: 'Правительство',
-            proc: 'Прокуратура',
-            hosp: 'Медицина',
-            law: 'Адвокатура',
-            mchs: 'МЧС',
-            fsin: 'ФСИН'
-        };
-
+        const factionShort = { mo:'МО', mvd:'МВД', sk:'СК', gov:'Правительство', proc:'Прокуратура',
+            hosp:'Медицина', law:'Адвокатура', mchs:'МЧС', fsin:'ФСИН' };
         const factionClasses = {
-            mo: 'faction-mo',
-            mvd: 'faction-mvd',
-            sk: 'faction-sk',
-            gov: 'faction-gov',
-            proc: 'faction-proc',
-            hosp: 'faction-hosp',
-            law: 'faction-law',
-            mchs: 'faction-mchs',
-            fsin: 'faction-fsin'
+            mo:'faction-mo', mvd:'faction-mvd', sk:'faction-sk', gov:'faction-gov',
+            proc:'faction-proc', hosp:'faction-hosp', law:'faction-law', mchs:'faction-mchs', fsin:'faction-fsin'
         };
 
-        // ============================================================
-        // 3. СПИСКИ ПО УМОЛЧАНИЮ
-        // ============================================================
+        // ---------- ДЕФОЛТНЫЕ СПИСКИ ----------
         const DEFAULT_LISTS = {
-            mo: {
-                docTypes: ['Приказ', 'Постановление', 'Распоряжение'],
-                positions: ['Министр обороны', 'Заместитель министра обороны', 'Начальник Генерального штаба'],
-                fullNames: ['Иванов И.И.', 'Петров П.П.', 'Сидоров С.С.']
-            },
-            mvd: {
-                docTypes: ['Приказ', 'Постановление', 'Распоряжение'],
-                positions: ['Министр внутренних дел', 'Заместитель министра', 'Начальник ГУ МВД'],
-                fullNames: ['Васильев В.В.', 'Смирнов С.С.', 'Михайлов М.М.']
-            },
-            sk: {
-                docTypes: ['Приказ', 'Постановление', 'Распоряжение'],
-                positions: ['Председатель СК', 'Заместитель председателя СК', 'Руководитель управления'],
-                fullNames: ['Александров А.А.', 'Морозов М.М.', 'Волков В.В.']
-            },
-            gov: {
-                docTypes: ['Приказ', 'Постановление', 'Распоряжение'],
-                positions: ['Премьер-министр', 'Заместитель премьер-министра', 'Министр'],
-                fullNames: ['Андреев А.А.', 'Макаров М.М.', 'Никитин Н.Н.']
-            },
-            proc: {
-                docTypes: ['Приказ', 'Постановление', 'Распоряжение'],
-                positions: ['Генеральный прокурор', 'Первый заместитель', 'Прокурор области'],
-                fullNames: ['Лебедев Л.Л.', 'Егоров Е.Е.', 'Савельев С.С.']
-            },
-            hosp: {
-                docTypes: ['Приказ', 'Постановление', 'Распоряжение'],
-                positions: ['Главный врач', 'Заместитель главного врача', 'Заведующий отделением'],
-                fullNames: ['Алексеева А.А.', 'Григорьева Г.Г.', 'Емельянова Е.Е.']
-            },
-            law: {
-                docTypes: ['Приказ', 'Постановление', 'Распоряжение'],
-                positions: ['Президент адвокатской палаты', 'Вице-президент', 'Старший адвокат'],
-                fullNames: ['Борисов Б.Б.', 'Громов Г.Г.', 'Денисов Д.Д.']
-            },
-            mchs: {
-                docTypes: ['Приказ', 'Постановление', 'Распоряжение'],
-                positions: ['Министр МЧС', 'Заместитель министра', 'Начальник управления'],
-                fullNames: ['Зайцев З.З.', 'Исаев И.И.', 'Комаров К.К.']
-            },
-            fsin: {
-                docTypes: ['Приказ', 'Постановление', 'Распоряжение'],
-                positions: ['Директор ФСИН', 'Заместитель директора', 'Начальник управления'],
-                fullNames: ['Осипов О.О.', 'Павлов П.П.', 'Романов Р.Р.']
-            }
+            mo: { docTypes:['Приказ','Постановление','Распоряжение'], positions:['Министр обороны','Зам. министра','Нач. Генштаба'], fullNames:['Иванов И.И.','Петров П.П.','Сидоров С.С.'] },
+            mvd: { docTypes:['Приказ','Постановление','Распоряжение'], positions:['Министр МВД','Зам. министра','Нач. ГУ МВД'], fullNames:['Васильев В.В.','Смирнов С.С.','Михайлов М.М.'] },
+            sk: { docTypes:['Приказ','Постановление','Распоряжение'], positions:['Председатель СК','Зам. председателя','Рук. управления'], fullNames:['Александров А.А.','Морозов М.М.','Волков В.В.'] },
+            gov: { docTypes:['Приказ','Постановление','Распоряжение'], positions:['Премьер-министр','Зам. премьера','Министр'], fullNames:['Андреев А.А.','Макаров М.М.','Никитин Н.Н.'] },
+            proc: { docTypes:['Приказ','Постановление','Распоряжение'], positions:['Генеральный прокурор','Первый зам.','Прокурор области'], fullNames:['Лебедев Л.Л.','Егоров Е.Е.','Савельев С.С.'] },
+            hosp: { docTypes:['Приказ','Постановление','Распоряжение'], positions:['Главный врач','Зам. главврача','Зав. отделением'], fullNames:['Алексеева А.А.','Григорьева Г.Г.','Емельянова Е.Е.'] },
+            law: { docTypes:['Приказ','Постановление','Распоряжение'], positions:['Президент палаты','Вице-президент','Старший адвокат'], fullNames:['Борисов Б.Б.','Громов Г.Г.','Денисов Д.Д.'] },
+            mchs: { docTypes:['Приказ','Постановление','Распоряжение'], positions:['Министр МЧС','Зам. министра','Нач. управления'], fullNames:['Зайцев З.З.','Исаев И.И.','Комаров К.К.'] },
+            fsin: { docTypes:['Приказ','Постановление','Распоряжение'], positions:['Директор ФСИН','Зам. директора','Нач. управления'], fullNames:['Осипов О.О.','Павлов П.П.','Романов Р.Р.'] }
         };
 
-        // ============================================================
-        // 4. WEBHOOKS
-        // ============================================================
+        // ---------- WEBHOOKS ----------
         const WEBHOOKS = {
-            mo: '',
-            mvd: '',
-            sk: '',
-            gov: 'https://discordapp.com/api/webhooks/1525593228437618790/OxC2urPqEjZP02Zp9AcnPkqND6okZSemEBJWcE2mKpJIHk8E3DihrQ8Kb6mZH4zpq2wH',
-            proc: '',
-            hosp: '',
-            law: '',
-            mchs: '',
-            fsin: ''
+            mo:'', mvd:'', sk:'', gov:'https://discordapp.com/api/webhooks/1525593228437618790/OxC2urPqEjZP02Zp9AcnPkqND6okZSemEBJWcE2mKpJIHk8E3DihrQ8Kb6mZH4zpq2wH',
+            proc:'', hosp:'', law:'', mchs:'', fsin:''
         };
 
-        // ============================================================
-        // 5. ДАННЫЕ
-        // ============================================================
+        // ---------- СОСТОЯНИЕ ----------
         let listsData = {};
         let currentFaction = null;
         let isLoggedIn = false;
 
+        // ---------- РАБОТА С ХРАНИЛИЩЕМ ----------
         function loadListsForFaction(faction) {
             const key = 'formyla_lists_' + faction;
             const saved = localStorage.getItem(key);
             if (saved) {
-                try {
-                    listsData = JSON.parse(saved);
-                    return;
-                } catch (e) {}
+                try { listsData = JSON.parse(saved); return; } catch(e) {}
             }
             listsData = JSON.parse(JSON.stringify(DEFAULT_LISTS[faction] || DEFAULT_LISTS.mo));
         }
-
         function saveListsForFaction(faction) {
             const key = 'formyla_lists_' + faction;
             localStorage.setItem(key, JSON.stringify(listsData));
         }
 
-        // ============================================================
-        // 6. DOM ЭЛЕМЕНТЫ
-        // ============================================================
-        const loginCard = document.getElementById('loginCard');
-        const mainCard = document.getElementById('mainCard');
-        const previewCard = document.getElementById('previewCard');
-        const loginFaction = document.getElementById('loginFaction');
-        const loginPassword = document.getElementById('loginPassword');
-        const loginBtn = document.getElementById('loginBtn');
-        const loginMessage = document.getElementById('loginMessage');
-        const logoutBtn = document.getElementById('logoutBtn');
-
-        const factionBadge = document.getElementById('factionBadge');
-        const factionTag = document.getElementById('factionTag');
-        const currentFactionDisplay = document.getElementById('currentFactionDisplay');
-        const docType = document.getElementById('docType');
-        const docNumber = document.getElementById('docNumber');
-        const docDate = document.getElementById('docDate');
-        const position = document.getElementById('position');
-        const fullName = document.getElementById('fullName');
-        const subject = document.getElementById('subject');
-        const content = document.getElementById('content');
-        const recipientGroup = document.getElementById('recipientGroup');
-        const recipientError = document.getElementById('recipientError');
-        const previewBtn = document.getElementById('previewBtn');
-        const publishBtn = document.getElementById('publishBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const previewContent = document.getElementById('previewContent');
-        const toast = document.getElementById('toast');
-        const webhookStatus = document.getElementById('webhookStatus');
-
-        const docTypeList = document.getElementById('docTypeList');
-        const positionList = document.getElementById('positionList');
-        const fullNameList = document.getElementById('fullNameList');
-        const newDocType = document.getElementById('newDocType');
-        const newPosition = document.getElementById('newPosition');
-        const newFullName = document.getElementById('newFullName');
-        const addDocTypeBtn = document.getElementById('addDocTypeBtn');
-        const addPositionBtn = document.getElementById('addPositionBtn');
-        const addFullNameBtn = document.getElementById('addFullNameBtn');
-
+        // ---------- DOM ----------
+        const $ = id => document.getElementById(id);
+        const loginCard = $('loginCard'), mainCard = $('mainCard'), previewCard = $('previewCard');
+        const loginFaction = $('loginFaction'), loginPassword = $('loginPassword'), loginBtn = $('loginBtn');
+        const loginMessage = $('loginMessage'), logoutBtn = $('logoutBtn');
+        const factionBadge = $('factionBadge'), factionTag = $('factionTag');
+        const currentFactionDisplay = $('currentFactionDisplay');
+        const docType = $('docType'), docNumber = $('docNumber'), docDate = $('docDate');
+        const position = $('position'), fullName = $('fullName'), subject = $('subject'), content = $('content');
+        const recipientGroup = $('recipientGroup'), recipientError = $('recipientError');
+        const previewBtn = $('previewBtn'), publishBtn = $('publishBtn'), clearBtn = $('clearBtn');
+        const previewContent = $('previewContent'), toast = $('toast');
+        const webhookStatus = $('webhookStatus');
+        const docTypeList = $('docTypeList'), positionList = $('positionList'), fullNameList = $('fullNameList');
+        const newDocType = $('newDocType'), newPosition = $('newPosition'), newFullName = $('newFullName');
+        const addDocTypeBtn = $('addDocTypeBtn'), addPositionBtn = $('addPositionBtn'), addFullNameBtn = $('addFullNameBtn');
         const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabMain = document.getElementById('tab-main');
-        const tabSettings = document.getElementById('tab-settings');
+        const tabMain = $('tab-main'), tabSettings = $('tab-settings');
 
-        // ============================================================
-        // 7. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-        // ============================================================
+        // ---------- ВСПОМОГАТЕЛЬНЫЕ ----------
         function getCurrentDate() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            return year + '-' + month + '-' + day;
+            const d = new Date();
+            return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
         }
-
-        function formatDateForDisplay(dateStr) {
-            if (!dateStr) return '';
-            const parts = dateStr.split('-');
-            return parts[2] + '.' + parts[1] + '.' + parts[0];
+        function formatDate(dateStr) {
+            if(!dateStr) return '';
+            const p = dateStr.split('-');
+            return p[2]+'.'+p[1]+'.'+p[0];
         }
-
-        function getCurrentTime() {
-            const now = new Date();
-            return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+        function getTime() {
+            const d = new Date();
+            return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
         }
-
-        function getFactionLabel(value) {
-            return factionNames[value] || value;
-        }
-
-        function getFactionShort(value) {
-            return factionShort[value] || value;
-        }
-
-        function getFactionClass(value) {
-            return factionClasses[value] || 'faction-mo';
-        }
+        function getFactionLabel(v){ return factionNames[v]||v; }
+        function getFactionShort(v){ return factionShort[v]||v; }
+        function getFactionClass(v){ return factionClasses[v]||'faction-mo'; }
 
         function getSelectedRecipients() {
             const checks = recipientGroup.querySelectorAll('input[type="checkbox"]:checked');
-            return Array.from(checks).map(function(cb) { return cb.value; });
+            return Array.from(checks).map(cb => cb.value);
+        }
+        function getRecipientsFormatted() {
+            let r = getSelectedRecipients();
+            if(!r.length) return '';
+            if(r.length===1) return r[0];
+            let last = r.pop();
+            return r.join(', ')+' и '+last;
         }
 
-        function getSelectedRecipientsFormatted() {
-            var recipients = getSelectedRecipients();
-            if (recipients.length === 0) return '';
-            if (recipients.length === 1) return recipients[0];
-            var last = recipients.pop();
-            return recipients.join(', ') + ' и ' + last;
-        }
-
-        function showToast(message, type) {
-            type = type || 'success';
-            toast.textContent = message;
+        function showToast(msg, type='success') {
+            toast.textContent = msg;
             toast.className = 'toast';
-            if (type === 'error') toast.classList.add('error');
-            else if (type === 'success') toast.classList.add('success');
+            if(type==='error') toast.classList.add('error');
+            else if(type==='success') toast.classList.add('success');
             toast.classList.add('show');
             clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(function() {
-                toast.classList.remove('show');
-            }, 3500);
+            toast._timeout = setTimeout(()=>toast.classList.remove('show'), 3500);
         }
 
-        // ============================================================
-        // 8. ОТОБРАЖЕНИЕ СПИСКОВ
-        // ============================================================
+        // ---------- ОТРИСОВКА СПИСКОВ ----------
         function renderList(container, items, removeFn) {
             container.innerHTML = '';
-            if (!items || items.length === 0) {
-                var empty = document.createElement('span');
+            if(!items || !items.length) {
+                const empty = document.createElement('span');
                 empty.className = 'empty-text';
-                empty.textContent = 'Список пуст';
+                empty.innerHTML = '<i class="fas fa-minus-circle"></i> Список пуст';
                 container.appendChild(empty);
                 return;
             }
-            items.forEach(function(item, index) {
-                var tag = document.createElement('span');
+            items.forEach((item, index) => {
+                const tag = document.createElement('span');
                 tag.className = 'list-item-tag';
-                tag.innerHTML = item + ' <button class="remove-btn" data-index="' + index + '">✕</button>';
-                tag.querySelector('.remove-btn').addEventListener('click', function(e) {
+                tag.innerHTML = item + ' <button class="remove-btn" data-index="'+index+'"><i class="fas fa-times"></i></button>';
+                tag.querySelector('.remove-btn').addEventListener('click', (e) => {
                     e.stopPropagation();
                     removeFn(index);
                 });
@@ -1244,78 +1101,54 @@
         }
 
         function renderAllLists() {
-            var self = this;
-            renderList(docTypeList, listsData.docTypes || [], function(index) {
-                listsData.docTypes.splice(index, 1);
+            renderList(docTypeList, listsData.docTypes || [], (i) => {
+                listsData.docTypes.splice(i,1);
                 saveListsForFaction(currentFaction);
                 renderAllLists();
                 updateSelects();
-                showToast('Тип документа удалён', 'success');
+                showToast('Тип документа удалён','success');
             });
-
-            renderList(positionList, listsData.positions || [], function(index) {
-                listsData.positions.splice(index, 1);
+            renderList(positionList, listsData.positions || [], (i) => {
+                listsData.positions.splice(i,1);
                 saveListsForFaction(currentFaction);
                 renderAllLists();
                 updateSelects();
-                showToast('Должность удалена', 'success');
+                showToast('Должность удалена','success');
             });
-
-            renderList(fullNameList, listsData.fullNames || [], function(index) {
-                listsData.fullNames.splice(index, 1);
+            renderList(fullNameList, listsData.fullNames || [], (i) => {
+                listsData.fullNames.splice(i,1);
                 saveListsForFaction(currentFaction);
                 renderAllLists();
                 updateSelects();
-                showToast('ФИО удалено', 'success');
+                showToast('ФИО удалено','success');
             });
         }
 
-        // ============================================================
-        // 9. ОБНОВЛЕНИЕ SELECT
-        // ============================================================
+        // ---------- ОБНОВЛЕНИЕ SELECT ----------
         function updateSelects() {
-            var docTypes = listsData.docTypes || ['Приказ', 'Постановление', 'Распоряжение'];
+            const dt = listsData.docTypes || ['Приказ','Постановление','Распоряжение'];
             docType.innerHTML = '';
-            docTypes.forEach(function(d) {
-                var opt = document.createElement('option');
-                opt.value = d;
-                opt.textContent = d;
-                docType.appendChild(opt);
-            });
+            dt.forEach(d => { const opt=document.createElement('option'); opt.value=d; opt.textContent=d; docType.appendChild(opt); });
 
-            var positions = listsData.positions || ['Сотрудник'];
+            const pos = listsData.positions || ['Сотрудник'];
             position.innerHTML = '';
-            positions.forEach(function(p) {
-                var opt = document.createElement('option');
-                opt.value = p;
-                opt.textContent = p;
-                position.appendChild(opt);
-            });
+            pos.forEach(p => { const opt=document.createElement('option'); opt.value=p; opt.textContent=p; position.appendChild(opt); });
 
-            var names = listsData.fullNames || ['Иванов И.И.'];
+            const names = listsData.fullNames || ['Иванов И.И.'];
             fullName.innerHTML = '';
-            names.forEach(function(n) {
-                var opt = document.createElement('option');
-                opt.value = n;
-                opt.textContent = n;
-                fullName.appendChild(opt);
-            });
+            names.forEach(n => { const opt=document.createElement('option'); opt.value=n; opt.textContent=n; fullName.appendChild(opt); });
         }
 
-        // ============================================================
-        // 10. ОБНОВЛЕНИЕ UI
-        // ============================================================
+        // ---------- UI ФРАКЦИИ ----------
         function updateUIForFaction() {
-            if (!currentFaction) return;
-            var short = getFactionShort(currentFaction);
-            var label = getFactionLabel(currentFaction);
-            var cls = getFactionClass(currentFaction);
-
+            if(!currentFaction) return;
+            const short = getFactionShort(currentFaction);
+            const label = getFactionLabel(currentFaction);
+            const cls = getFactionClass(currentFaction);
             factionBadge.textContent = short;
-            factionTag.textContent = short;
-            factionTag.className = 'status-tag ' + cls;
+            factionTag.innerHTML = '<i class="fas fa-shield-alt"></i> '+short;
+            factionTag.className = 'status-tag '+cls;
             currentFactionDisplay.value = label;
-
             loadListsForFaction(currentFaction);
             renderAllLists();
             updateSelects();
@@ -1323,415 +1156,223 @@
         }
 
         function updateWebhookStatus() {
-            if (!currentFaction) return;
-            var url = WEBHOOKS[currentFaction];
-            if (url && url.trim() !== '') {
-                webhookStatus.textContent = '✅ Готов к отправке';
+            const url = WEBHOOKS[currentFaction];
+            if(url && url.trim()!=='') {
+                webhookStatus.textContent = '✅ Готов';
                 webhookStatus.className = 'status ready';
                 publishBtn.disabled = false;
             } else {
-                webhookStatus.textContent = '⏳ Webhook не настроен';
+                webhookStatus.textContent = '⏳ Не настроен';
                 webhookStatus.className = 'status waiting';
                 publishBtn.disabled = true;
             }
         }
 
-        // ============================================================
-        // 11. ДОБАВЛЕНИЕ В СПИСОК
-        // ============================================================
-        function addToList(input, listKey, toastMsg) {
-            var value = input.value.trim();
-            if (!value) {
-                showToast('⚠️ Введите значение!', 'error');
-                return;
-            }
-            if (listsData[listKey] && listsData[listKey].indexOf(value) !== -1) {
-                showToast('⚠️ Такое значение уже есть!', 'error');
-                return;
-            }
-            if (!listsData[listKey]) listsData[listKey] = [];
-            listsData[listKey].push(value);
+        // ---------- ДОБАВЛЕНИЕ В СПИСОК ----------
+        function addToList(input, listKey, msg) {
+            const val = input.value.trim();
+            if(!val) { showToast('⚠️ Введите значение','error'); return; }
+            if(listsData[listKey] && listsData[listKey].includes(val)) { showToast('⚠️ Уже существует','error'); return; }
+            if(!listsData[listKey]) listsData[listKey]=[];
+            listsData[listKey].push(val);
             saveListsForFaction(currentFaction);
             renderAllLists();
             updateSelects();
-            input.value = '';
-            showToast(toastMsg, 'success');
+            input.value='';
+            showToast(msg,'success');
         }
 
-        // ============================================================
-        // 12. ВАЛИДАЦИЯ И ДОКУМЕНТ
-        // ============================================================
+        // ---------- ВАЛИДАЦИЯ ----------
         function validateFields() {
-            var isValid = true;
-
-            var fields = [
-                { el: docType, name: 'Тип документа' },
-                { el: docDate, name: 'Дата' },
-                { el: position, name: 'Должность' },
-                { el: fullName, name: 'ФИО' },
-                { el: subject, name: 'Тема' },
-                { el: content, name: 'Текст' }
+            let valid=true;
+            const fields = [
+                { el:docType, name:'Тип' }, { el:docDate, name:'Дата' },
+                { el:position, name:'Должность' }, { el:fullName, name:'ФИО' },
+                { el:subject, name:'Тема' }, { el:content, name:'Текст' }
             ];
-
-            fields.forEach(function(f) {
-                if (!f.el.value || f.el.value.trim() === '') {
-                    f.el.classList.add('error');
-                    isValid = false;
-                } else {
-                    f.el.classList.remove('error');
-                }
+            fields.forEach(f => {
+                if(!f.el.value || f.el.value.trim()==='') { f.el.classList.add('error'); valid=false; }
+                else f.el.classList.remove('error');
             });
-
-            var recipients = getSelectedRecipients();
-            if (recipients.length === 0) {
+            if(getSelectedRecipients().length===0) {
                 recipientError.textContent = '⚠️ Выберите хотя бы одного получателя';
-                isValid = false;
-            } else {
-                recipientError.textContent = '';
-            }
-
-            return isValid;
+                valid=false;
+            } else recipientError.textContent='';
+            return valid;
         }
 
+        // ---------- ПОСТРОЕНИЕ ДОКУМЕНТА ----------
         function buildDocument() {
-            var faction = currentFaction;
-            var docTypeVal = docType.value;
-            var number = docNumber.value.trim();
-            var date = docDate.value;
-            var pos = position.value;
-            var name = fullName.value;
-            var subj = subject.value.trim();
-            var text = content.value.trim();
-            var recipients = getSelectedRecipientsFormatted();
-
-            var factionName = getFactionLabel(faction);
-            var dateDisplay = formatDateForDisplay(date);
-            var timeDisplay = getCurrentTime();
-            var numDisplay = number ? ' №' + number : '';
-
             return {
-                title: docTypeVal + numDisplay,
-                faction: factionName,
-                factionShort: getFactionShort(faction),
-                factionClass: getFactionClass(faction),
-                date: dateDisplay,
-                time: timeDisplay,
-                recipients: recipients,
-                position: pos,
-                fullName: name,
-                subject: subj,
-                content: text
+                title: docType.value + (docNumber.value.trim() ? ' №'+docNumber.value.trim() : ''),
+                faction: getFactionLabel(currentFaction),
+                factionShort: getFactionShort(currentFaction),
+                factionClass: getFactionClass(currentFaction),
+                date: formatDate(docDate.value),
+                time: getTime(),
+                recipients: getRecipientsFormatted(),
+                position: position.value,
+                fullName: fullName.value,
+                subject: subject.value.trim(),
+                content: content.value.trim()
             };
         }
 
-        // ============================================================
-        // 13. ПРЕДПРОСМОТР
-        // ============================================================
+        // ---------- ПРЕДПРОСМОТР ----------
         function renderPreview() {
-            if (!isLoggedIn) return;
-
-            var doc = buildDocument();
-
-            if (!doc.fullName || !doc.subject || !doc.content || !doc.recipients) {
-                previewContent.innerHTML = '<div class="discord-message"><div style="color: #2f4d5c; text-align: center; padding: 20px;">Заполните все обязательные поля для предпросмотра...</div></div>';
+            if(!isLoggedIn) return;
+            const doc = buildDocument();
+            if(!doc.fullName || !doc.subject || !doc.content || !doc.recipients) {
+                previewContent.innerHTML = '<div class="discord-message"><div style="color:#3d6378;text-align:center;padding:24px;"><i class="fas fa-info-circle" style="font-size:20px;"></i> Заполните все обязательные поля</div></div>';
                 previewCard.classList.remove('hidden');
                 return;
             }
-
-            var avatarLetter = doc.factionShort.charAt(0);
-
-            previewContent.innerHTML = '<div class="discord-message">' +
-                '<div class="msg-header">' +
-                '<div class="msg-avatar ' + doc.factionClass + '">' + avatarLetter + '</div>' +
-                '<span class="msg-author">' + doc.factionShort + ' • Отдел кадров <span class="author-badge">' + doc.factionShort + '</span></span>' +
-                '<span class="msg-timestamp">' + doc.date + ' ' + doc.time + '</span>' +
-                '</div>' +
-                '<div class="msg-content">' +
-                '<span class="doc-title">' + doc.title + '</span>' +
-                '<span class="field-line">📅 <span class="field-label">Дата:</span> <span class="field-value">' + doc.date + '</span></span>' +
-                '<span class="field-line">🏛 <span class="field-label">Фракция:</span> <span class="field-value">' + doc.faction + '</span></span>' +
-                '<span class="field-line">👤 <span class="field-label">Кому:</span> <span class="field-value">' + doc.recipients + '</span></span>' +
-                '<span class="field-line">👤 <span class="field-label">Должность:</span> <span class="field-value">' + doc.position + '</span></span>' +
-                '<span class="field-line">👤 <span class="field-label">ФИО:</span> <span class="field-value">' + doc.fullName + '</span></span>' +
-                '<hr class="divider">' +
-                '<div class="text-block">📌 Тема: ' + doc.subject + '\n\n📝 Текст:\n' + doc.content + '</div>' +
-                '</div>' +
-                '<div class="msg-footer">Отдел кадров • ' + doc.date + ' ' + doc.time + '</div>' +
-                '</div>';
-
+            const avatar = doc.factionShort.charAt(0);
+            previewContent.innerHTML = `
+                <div class="discord-message">
+                    <div class="msg-header">
+                        <div class="msg-avatar ${doc.factionClass}">${avatar}</div>
+                        <span class="msg-author">${doc.factionShort} • Отдел кадров <span class="author-badge">${doc.factionShort}</span></span>
+                        <span class="msg-timestamp">${doc.date} ${doc.time}</span>
+                    </div>
+                    <div class="msg-content">
+                        <span class="doc-title">${doc.title}</span>
+                        <span class="field-line"><i class="fas fa-calendar-alt" style="color:#6a8f9f;"></i> <span class="field-label">Дата:</span> <span class="field-value">${doc.date}</span></span>
+                        <span class="field-line"><i class="fas fa-flag" style="color:#6a8f9f;"></i> <span class="field-label">Фракция:</span> <span class="field-value">${doc.faction}</span></span>
+                        <span class="field-line"><i class="fas fa-users" style="color:#6a8f9f;"></i> <span class="field-label">Кому:</span> <span class="field-value">${doc.recipients}</span></span>
+                        <span class="field-line"><i class="fas fa-briefcase" style="color:#6a8f9f;"></i> <span class="field-label">Должность:</span> <span class="field-value">${doc.position}</span></span>
+                        <span class="field-line"><i class="fas fa-user" style="color:#6a8f9f;"></i> <span class="field-label">ФИО:</span> <span class="field-value">${doc.fullName}</span></span>
+                        <hr class="divider">
+                        <div class="text-block"><i class="fas fa-heading" style="color:#f5c27a;"></i> Тема: ${doc.subject}\n\n<i class="fas fa-align-left" style="color:#f5c27a;"></i> Текст:\n${doc.content}</div>
+                    </div>
+                    <div class="msg-footer">Отдел кадров • ${doc.date} ${doc.time}</div>
+                </div>
+            `;
             previewCard.classList.remove('hidden');
         }
 
-        // ============================================================
-        // 14. ОТПРАВКА
-        // ============================================================
+        // ---------- ОТПРАВКА В DISCORD ----------
         async function sendToDiscord() {
-            if (!isLoggedIn) {
-                showToast('⚠️ Авторизуйтесь сначала!', 'error');
-                return;
-            }
-
-            if (!validateFields()) {
-                showToast('⚠️ Заполните все обязательные поля!', 'error');
-                return;
-            }
-
-            var faction = currentFaction;
-            var webhookUrl = WEBHOOKS[faction];
-
-            if (!webhookUrl || webhookUrl.trim() === '') {
-                showToast('⚠️ Webhook для этой фракции не настроен!', 'error');
-                return;
-            }
-
-            var doc = buildDocument();
-
-            var messageContent = '**' + doc.title + '**\n\n' +
-                '📅 **Дата:** ' + doc.date + '\n\n' +
-                '🏛 **Фракция:** ' + doc.faction + '\n\n' +
-                '👤 **Кому:** ' + doc.recipients + '\n\n' +
-                '👤 **Должность:** ' + doc.position + '\n\n' +
-                '👤 **ФИО:** ' + doc.fullName + '\n\n' +
-                '```text\n📌 Тема: ' + doc.subject + '\n\n📝 Текст:\n' + doc.content + '\n```';
-
-            var colors = {
-                mo: 0x2ecc71,
-                mvd: 0xe74c3c,
-                sk: 0x3498db,
-                gov: 0xf1c40f,
-                proc: 0x9b59b6,
-                hosp: 0x1abc9c,
-                law: 0xe67e22,
-                mchs: 0xe67e22,
-                fsin: 0x95a5a6
-            };
-
-            var payload = {
-                content: '📄 **' + doc.factionShort + ' • ' + doc.title + '**',
+            if(!isLoggedIn) { showToast('⚠️ Авторизуйтесь','error'); return; }
+            if(!validateFields()) { showToast('⚠️ Заполните все поля','error'); return; }
+            const url = WEBHOOKS[currentFaction];
+            if(!url || !url.trim()) { showToast('⚠️ Webhook не настроен','error'); return; }
+            const doc = buildDocument();
+            const msg = `**${doc.title}**\n\n📅 **Дата:** ${doc.date}\n\n🏛 **Фракция:** ${doc.faction}\n\n👤 **Кому:** ${doc.recipients}\n\n👤 **Должность:** ${doc.position}\n\n👤 **ФИО:** ${doc.fullName}\n\n\`\`\`text\n📌 Тема: ${doc.subject}\n\n📝 Текст:\n${doc.content}\n\`\`\``;
+            const colors = { mo:0x2ecc71, mvd:0xe74c3c, sk:0x3498db, gov:0xf1c40f, proc:0x9b59b6, hosp:0x1abc9c, law:0xe67e22, mchs:0xe67e22, fsin:0x95a5a6 };
+            const payload = {
+                content: `📄 **${doc.factionShort} • ${doc.title}**`,
                 embeds: [{
                     title: doc.title,
-                    description: messageContent,
-                    color: colors[faction] || 0x3498db,
-                    footer: {
-                        text: 'Отдел кадров • ' + doc.date + ' ' + doc.time
-                    },
+                    description: msg,
+                    color: colors[currentFaction] || 0x3498db,
+                    footer: { text: `Отдел кадров • ${doc.date} ${doc.time}` },
                     timestamp: new Date().toISOString()
                 }]
             };
-
             try {
                 publishBtn.disabled = true;
-                publishBtn.innerHTML = '<span class="icon">⏳</span> ОТПРАВКА...';
-
-                var response = await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (response.ok) {
-                    showToast('✅ Документ успешно опубликован в Discord!', 'success');
-                } else {
-                    showToast('❌ Ошибка отправки: ' + response.status, 'error');
-                }
-            } catch (error) {
-                showToast('❌ Ошибка: ' + error.message, 'error');
-            } finally {
-                publishBtn.disabled = false;
-                publishBtn.innerHTML = '<span class="icon">📤</span> ОПУБЛИКОВАТЬ';
-            }
+                publishBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> ОТПРАВКА...';
+                const resp = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+                if(resp.ok) showToast('✅ Документ опубликован!','success');
+                else showToast('❌ Ошибка '+resp.status,'error');
+            } catch(e) { showToast('❌ '+e.message,'error'); }
+            finally { publishBtn.disabled = false; publishBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> ОПУБЛИКОВАТЬ'; }
         }
 
-        // ============================================================
-        // 15. ОЧИСТКА
-        // ============================================================
+        // ---------- ОЧИСТКА ----------
         function clearAll() {
-            docNumber.value = '';
-            docDate.value = getCurrentDate();
-            subject.value = '';
-            content.value = '';
-
-            recipientGroup.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
-                cb.checked = false;
-                cb.closest('.checkbox-item').classList.remove('checked');
-            });
-
-            document.querySelectorAll('.field-control').forEach(function(el) {
-                el.classList.remove('error');
-            });
-            recipientError.textContent = '';
-
-            previewContent.innerHTML = '<div class="discord-message"><div style="color: #2f4d5c; text-align: center; padding: 20px;">Заполните все обязательные поля для предпросмотра...</div></div>';
+            docNumber.value='';
+            docDate.value=getCurrentDate();
+            subject.value='';
+            content.value='';
+            recipientGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked=false; cb.closest('.checkbox-item').classList.remove('checked'); });
+            document.querySelectorAll('.field-control').forEach(el => el.classList.remove('error'));
+            recipientError.textContent='';
+            previewContent.innerHTML = '<div class="discord-message"><div style="color:#3d6378;text-align:center;padding:24px;"><i class="fas fa-info-circle" style="font-size:20px;"></i> Заполните все обязательные поля</div></div>';
             previewCard.classList.add('hidden');
-            showToast('🗑 Все поля очищены', 'success');
+            showToast('🗑 Поля очищены','success');
         }
 
-        // ============================================================
-        // 16. АВТОРИЗАЦИЯ
-        // ============================================================
+        // ---------- ЛОГИН / ЛОГАУТ ----------
         function handleLogin() {
-            var faction = loginFaction.value;
-            var password = loginPassword.value.trim();
-
-            if (!password) {
-                loginMessage.textContent = '⚠️ Введите пароль!';
-                loginMessage.className = 'login-error';
-                return;
-            }
-
-            var correctPassword = PASSWORDS[faction];
-            if (password === correctPassword) {
-                loginMessage.textContent = '✅ Доступ разрешён!';
-                loginMessage.className = 'login-success';
-
-                currentFaction = faction;
-                isLoggedIn = true;
-
-                loginCard.classList.add('hidden');
-                mainCard.classList.remove('hidden');
-
+            const faction = loginFaction.value;
+            const pass = loginPassword.value.trim();
+            if(!pass) { loginMessage.textContent = '⚠️ Введите пароль!'; loginMessage.className = 'login-message error'; return; }
+            if(pass === PASSWORDS[faction]) {
+                loginMessage.textContent = '✅ Доступ разрешён!'; loginMessage.className = 'login-message success';
+                currentFaction = faction; isLoggedIn = true;
+                loginCard.classList.add('hidden'); mainCard.classList.remove('hidden');
                 updateUIForFaction();
                 docDate.value = getCurrentDate();
-
-                setTimeout(function() {
-                    loginMessage.textContent = '';
-                }, 1500);
-
-                showToast('🔓 Добро пожаловать, ' + getFactionLabel(faction) + '!', 'success');
+                setTimeout(() => loginMessage.textContent = '', 1200);
+                showToast('🔓 Добро пожаловать, '+getFactionLabel(faction),'success');
             } else {
-                loginMessage.textContent = '❌ Неверный пароль!';
-                loginMessage.className = 'login-error';
-                loginPassword.value = '';
-                loginPassword.focus();
+                loginMessage.textContent = '❌ Неверный пароль!'; loginMessage.className = 'login-message error';
+                loginPassword.value = ''; loginPassword.focus();
             }
         }
 
         function handleLogout() {
-            if (!confirm('Вы уверены, что хотите выйти?')) return;
-
-            isLoggedIn = false;
-            currentFaction = null;
-
-            mainCard.classList.add('hidden');
-            previewCard.classList.add('hidden');
-            loginCard.classList.remove('hidden');
-
-            loginPassword.value = '';
-            loginMessage.textContent = '🔒 Вы вышли из системы';
-            loginMessage.className = 'login-error';
-
-            showToast('🔒 Выход выполнен', 'success');
+            if(!confirm('Выйти?')) return;
+            isLoggedIn = false; currentFaction = null;
+            mainCard.classList.add('hidden'); previewCard.classList.add('hidden'); loginCard.classList.remove('hidden');
+            loginPassword.value = ''; loginMessage.textContent = '🔒 Вы вышли'; loginMessage.className = 'login-message error';
+            showToast('🔒 Выход выполнен','success');
         }
 
-        // ============================================================
-        // 17. ОБРАБОТЧИКИ
-        // ============================================================
-
-        // Чекбоксы
-        recipientGroup.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
-            cb.addEventListener('change', function() {
-                var label = this.closest('.checkbox-item');
-                if (this.checked) {
-                    label.classList.add('checked');
-                } else {
-                    label.classList.remove('checked');
-                }
-                if (getSelectedRecipients().length > 0) {
-                    recipientError.textContent = '';
-                }
-            });
-        });
-
-        // Вкладки
-        tabBtns.forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                tabBtns.forEach(function(b) { b.classList.remove('active'); });
-                this.classList.add('active');
-                var tab = this.dataset.tab;
-                if (tab === 'main') {
-                    tabMain.classList.add('active');
-                    tabSettings.classList.remove('active');
-                } else {
-                    tabSettings.classList.add('active');
-                    tabMain.classList.remove('active');
-                }
-            });
-        });
-
-        // Добавление
-        addDocTypeBtn.addEventListener('click', function() {
-            addToList(newDocType, 'docTypes', '✅ Тип документа добавлен');
-        });
-        newDocType.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') addDocTypeBtn.click();
-        });
-
-        addPositionBtn.addEventListener('click', function() {
-            addToList(newPosition, 'positions', '✅ Должность добавлена');
-        });
-        newPosition.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') addPositionBtn.click();
-        });
-
-        addFullNameBtn.addEventListener('click', function() {
-            addToList(newFullName, 'fullNames', '✅ ФИО добавлено');
-        });
-        newFullName.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') addFullNameBtn.click();
-        });
-
-        // Вход/выход
+        // ---------- СОБЫТИЯ ----------
         loginBtn.addEventListener('click', handleLogin);
-        loginPassword.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') handleLogin();
-        });
-
+        loginPassword.addEventListener('keydown', e => { if(e.key==='Enter') handleLogin(); });
         logoutBtn.addEventListener('click', handleLogout);
 
-        // Кнопки
-        previewBtn.addEventListener('click', function() {
-            if (!isLoggedIn) {
-                showToast('⚠️ Авторизуйтесь сначала!', 'error');
-                return;
-            }
-            if (!validateFields()) {
-                showToast('⚠️ Заполните все обязательные поля!', 'error');
-                return;
-            }
-            renderPreview();
+        // чекбоксы
+        recipientGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', function() {
+                const label = this.closest('.checkbox-item');
+                this.checked ? label.classList.add('checked') : label.classList.remove('checked');
+                if(getSelectedRecipients().length) recipientError.textContent='';
+            });
         });
 
+        // вкладки
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                if(this.dataset.tab==='main') { tabMain.classList.add('active'); tabSettings.classList.remove('active'); }
+                else { tabSettings.classList.add('active'); tabMain.classList.remove('active'); }
+            });
+        });
+
+        // добавление
+        addDocTypeBtn.addEventListener('click', ()=>addToList(newDocType,'docTypes','✅ Тип добавлен'));
+        newDocType.addEventListener('keydown', e => { if(e.key==='Enter') addDocTypeBtn.click(); });
+        addPositionBtn.addEventListener('click', ()=>addToList(newPosition,'positions','✅ Должность добавлена'));
+        newPosition.addEventListener('keydown', e => { if(e.key==='Enter') addPositionBtn.click(); });
+        addFullNameBtn.addEventListener('click', ()=>addToList(newFullName,'fullNames','✅ ФИО добавлено'));
+        newFullName.addEventListener('keydown', e => { if(e.key==='Enter') addFullNameBtn.click(); });
+
+        // кнопки
+        previewBtn.addEventListener('click', ()=>{
+            if(!isLoggedIn) { showToast('⚠️ Авторизуйтесь','error'); return; }
+            if(!validateFields()) { showToast('⚠️ Заполните поля','error'); return; }
+            renderPreview();
+        });
         publishBtn.addEventListener('click', sendToDiscord);
         clearBtn.addEventListener('click', clearAll);
 
-        document.querySelectorAll('#mainCard .field-control').forEach(function(el) {
-            el.addEventListener('input', function() {
-                if (this.classList.contains('error')) {
-                    this.classList.remove('error');
-                }
-            });
-            el.addEventListener('change', function() {
-                if (this.classList.contains('error')) {
-                    this.classList.remove('error');
-                }
-            });
+        // снять ошибки при вводе
+        document.querySelectorAll('#mainCard .field-control').forEach(el => {
+            el.addEventListener('input', function(){ if(this.classList.contains('error')) this.classList.remove('error'); });
+            el.addEventListener('change', function(){ if(this.classList.contains('error')) this.classList.remove('error'); });
         });
 
-        // ============================================================
-        // 18. ИНИЦИАЛИЗАЦИЯ
-        // ============================================================
+        // инициализация
         docDate.value = getCurrentDate();
-
-        console.log('📄 Генератор документов Formyla v.7');
-        console.log('🔑 Пароли для фракций:');
-        for (var key in PASSWORDS) {
-            console.log('  ' + key + ': ' + PASSWORDS[key]);
-        }
-
+        console.log('📄 Formyla v.8 · База данных localStorage');
+        console.log('🔑 Пароли:', PASSWORDS);
     })();
 </script>
-
 </body>
 </html>
