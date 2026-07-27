@@ -59,7 +59,6 @@
             gap: 24px;
         }
 
-        /* Glassmorphism */
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
@@ -79,7 +78,7 @@
             display: none;
         }
 
-        /* Header */
+        /* HEADER */
         .header {
             display: flex;
             justify-content: space-between;
@@ -128,7 +127,6 @@
             flex-wrap: wrap;
         }
 
-        /* Theme toggle */
         .theme-toggle {
             background: rgba(74, 180, 220, 0.08);
             border: 1px solid rgba(74, 180, 220, 0.12);
@@ -145,7 +143,6 @@
             border-color: var(--accent-cyan);
         }
 
-        /* Status tag */
         .status-tag {
             display: inline-flex;
             align-items: center;
@@ -170,7 +167,7 @@
         .faction-mchs { border-color: #f39c12; color: #f39c12; background: rgba(243, 156, 18, 0.06); }
         .faction-fsin { border-color: #95a5a6; color: #95a5a6; background: rgba(149, 165, 166, 0.06); }
 
-        /* Tabs */
+        /* TABS */
         .tabs {
             display: flex;
             gap: 4px;
@@ -221,7 +218,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Fields */
+        /* FIELDS */
         .fields-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -300,7 +297,7 @@
             line-height: 1.7;
         }
 
-        /* Checkboxes */
+        /* CHECKBOXES */
         .checkbox-group {
             display: flex;
             flex-wrap: wrap;
@@ -346,7 +343,7 @@
             padding-top: 4px;
         }
 
-        /* Buttons */
+        /* BUTTONS */
         .btn-group {
             display: flex;
             gap: 14px;
@@ -450,7 +447,19 @@
             gap: 6px;
         }
 
-        /* Webhook */
+        .btn-login {
+            background: linear-gradient(135deg, #1a3a4a, #0f2838);
+            color: #8dc8d8;
+            border: 1px solid rgba(74, 180, 220, 0.15);
+        }
+
+        .btn-login:hover:not(:disabled) {
+            background: linear-gradient(135deg, #1f4a5a, #153a48);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 12px 40px -10px rgba(74, 180, 220, 0.2);
+        }
+
+        /* WEBHOOK */
         .webhook-section {
             background: rgba(7, 11, 18, 0.3);
             border: 1px solid rgba(74, 180, 220, 0.06);
@@ -490,49 +499,92 @@
             background: rgba(245, 201, 122, 0.04);
         }
 
-        /* ========== ЛОГИН С КРАСИВЫМ СПИСКОМ ========== */
+        /* ========== КРАСИВЫЙ ЛОГИН ========== */
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            opacity: 0.7;
+            margin-bottom: 18px;
+        }
+
         .faction-grid-login {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 8px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
         }
 
         .faction-item-login {
+            position: relative;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 14px;
+            gap: 16px;
+            padding: 16px 20px;
+            border-radius: 18px;
             background: rgba(7, 11, 18, 0.3);
             border: 1px solid rgba(74, 180, 220, 0.06);
             transition: var(--transition);
             cursor: pointer;
+            overflow: hidden;
+        }
+
+        .faction-item-login::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(74, 180, 220, 0.1), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: var(--transition);
         }
 
         .faction-item-login:hover {
-            border-color: rgba(74, 180, 220, 0.2);
+            transform: translateY(-3px);
+            border-color: rgba(74, 180, 220, 0.15);
             background: rgba(7, 11, 18, 0.5);
-            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .faction-item-login:hover::before {
+            opacity: 1;
         }
 
         .faction-item-login.selected {
             border-color: var(--accent-cyan);
             background: rgba(74, 180, 220, 0.06);
-            box-shadow: 0 0 20px rgba(74, 180, 220, 0.05);
+            box-shadow: 0 0 40px rgba(74, 180, 220, 0.05), inset 0 0 30px rgba(74, 180, 220, 0.02);
+            transform: translateY(-3px);
+        }
+
+        .faction-item-login.selected::before {
+            opacity: 1;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
         }
 
         .faction-item-login .faction-icon {
-            width: 36px;
-            height: 36px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 800;
             color: #fff;
             flex-shrink: 0;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .faction-item-login.selected .faction-icon {
+            transform: scale(1.05);
+            box-shadow: 0 4px 25px rgba(74, 180, 220, 0.3);
         }
 
         .faction-item-login .faction-info {
@@ -541,27 +593,37 @@
 
         .faction-item-login .faction-name {
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-primary);
+            line-height: 1.2;
         }
 
         .faction-item-login .faction-short {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
+            opacity: 0.6;
         }
 
-        .faction-item-login .faction-pass {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-            opacity: 0.5;
+        .faction-item-login .faction-check {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: var(--accent-cyan);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .faction-item-login.selected .faction-check {
+            opacity: 1;
         }
 
         /* ========== АНАЛИТИКА ========== */
         .analytics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 14px;
             margin-bottom: 22px;
         }
@@ -599,7 +661,6 @@
             margin-top: 4px;
         }
 
-        /* Charts */
         .chart-container {
             background: rgba(7, 11, 18, 0.2);
             border: 1px solid rgba(74, 180, 220, 0.06);
@@ -665,7 +726,6 @@
             margin-bottom: 3px;
         }
 
-        /* Activity table */
         .activity-table {
             width: 100%;
             border-collapse: collapse;
@@ -791,7 +851,7 @@
             min-width: auto;
         }
 
-        /* ========== СТИЛИ ДЛЯ ПРЕДПРОСМОТРА ========== */
+        /* ========== DISCORD STYLES ========== */
         .discord-msg {
             border-radius: 16px;
             padding: 18px 22px;
@@ -799,7 +859,6 @@
             transition: var(--transition);
         }
 
-        /* Стиль 1: CLASSIC — минималистичный, строгий */
         .discord-msg.style-classic {
             background: rgba(15, 26, 36, 0.7);
             border-left: 4px solid var(--accent-cyan);
@@ -834,7 +893,6 @@
         }
         .discord-msg.style-classic .msg-footer { color: var(--text-muted); font-size: 12px; padding-left: 48px; margin-top: 6px; }
 
-        /* Стиль 2: GRADIENT — цветной, с градиентами */
         .discord-msg.style-gradient {
             background: linear-gradient(145deg, rgba(26, 58, 80, 0.8), rgba(15, 40, 56, 0.6));
             border: 1px solid rgba(74, 180, 220, 0.15);
@@ -873,7 +931,6 @@
         }
         .discord-msg.style-gradient .msg-footer { color: var(--text-muted); font-size: 12px; padding-left: 58px; margin-top: 8px; opacity: 0.7; }
 
-        /* Стиль 3: NEON — яркий, с неоновым свечением */
         .discord-msg.style-neon {
             background: rgba(10, 18, 28, 0.85);
             border: 1px solid rgba(74, 180, 220, 0.25);
@@ -922,12 +979,6 @@
             display: block; margin-bottom: 10px;
             text-shadow: 0 0 30px rgba(245, 201, 122, 0.15), 0 0 60px rgba(245, 201, 122, 0.05);
         }
-        .discord-msg.style-neon .msg-content .field-line {
-            display: block; font-size: 14px; padding: 2px 0;
-        }
-        .discord-msg.style-neon .msg-content .field-label {
-            color: var(--text-secondary); font-weight: 500; opacity: 0.7;
-        }
         .discord-msg.style-neon .msg-content .text-block {
             background: rgba(7, 11, 18, 0.5); border-radius: 16px; padding: 16px 20px;
             font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #c8dce8;
@@ -942,7 +993,7 @@
             text-shadow: 0 0 10px rgba(74, 180, 220, 0.05);
         }
 
-        /* ========== AI Assistant ========== */
+        /* AI ASSISTANT */
         .ai-assistant {
             background: rgba(74, 180, 220, 0.04);
             border: 1px solid rgba(74, 180, 220, 0.08);
@@ -993,7 +1044,6 @@
             margin-top: 6px;
         }
 
-        /* Login message */
         .login-message {
             font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
@@ -1004,7 +1054,6 @@
         .login-message.error { color: var(--accent-red); }
         .login-message.success { color: var(--accent-green); }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 32px;
@@ -1034,7 +1083,7 @@
         .toast.error { border-color: rgba(231, 76, 60, 0.2); }
         .toast.success { border-color: rgba(46, 204, 113, 0.15); }
 
-        /* Списки настроек */
+        /* SETTINGS LISTS */
         .list-settings {
             background: rgba(7, 11, 18, 0.2);
             border: 1px solid rgba(74, 180, 220, 0.04);
@@ -1212,84 +1261,93 @@
                 <i class="fas fa-lock"></i> ДОСТУП
                 <span class="badge">Formyla Pro</span>
             </div>
-            <div style="color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; font-size: 13px;">
+            <div class="login-subtitle">
                 <i class="fas fa-key"></i> выберите фракцию
             </div>
         </div>
 
-        <!-- Красивый список фракций -->
+        <!-- Красивый список фракций без паролей -->
         <div class="faction-grid-login" id="factionGrid">
-            <div class="faction-item-login" data-faction="mo" style="border-color: rgba(46,204,113,0.2);">
-                <div class="faction-icon" style="background: #2ecc71;">МО</div>
+            <div class="faction-item-login" data-faction="mo">
+                <div class="faction-icon" style="background: linear-gradient(135deg, #2ecc71, #27ae60);">МО</div>
                 <div class="faction-info">
                     <div class="faction-name">Министерство Обороны</div>
-                    <div class="faction-short">МО • пароль: <span class="faction-pass">mofr26</span></div>
+                    <div class="faction-short">МО</div>
                 </div>
+                <div class="faction-check"><i class="fas fa-check-circle"></i></div>
             </div>
-            <div class="faction-item-login" data-faction="mvd" style="border-color: rgba(231,76,60,0.2);">
-                <div class="faction-icon" style="background: #e74c3c;">МВД</div>
+            <div class="faction-item-login" data-faction="mvd">
+                <div class="faction-icon" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">МВД</div>
                 <div class="faction-info">
                     <div class="faction-name">Министерство Внутренних Дел</div>
-                    <div class="faction-short">МВД • пароль: <span class="faction-pass">mvdfr26</span></div>
+                    <div class="faction-short">МВД</div>
                 </div>
+                <div class="faction-check"><i class="fas fa-check-circle"></i></div>
             </div>
-            <div class="faction-item-login" data-faction="sk" style="border-color: rgba(52,152,219,0.2);">
-                <div class="faction-icon" style="background: #3498db;">СК</div>
+            <div class="faction-item-login" data-faction="sk">
+                <div class="faction-icon" style="background: linear-gradient(135deg, #3498db, #2980b9);">СК</div>
                 <div class="faction-info">
                     <div class="faction-name">Следственный Комитет</div>
-                    <div class="faction-short">СК • пароль: <span class="faction-pass">skfr26</span></div>
+                    <div class="faction-short">СК</div>
                 </div>
+                <div class="faction-check"><i class="fas fa-check-circle"></i></div>
             </div>
-            <div class="faction-item-login" data-faction="gov" style="border-color: rgba(241,196,15,0.2);">
-                <div class="faction-icon" style="background: #f1c40f; color: #1a1a1a;">ПР</div>
+            <div class="faction-item-login" data-faction="gov">
+                <div class="faction-icon" style="background: linear-gradient(135deg, #f1c40f, #f39c12); color: #1a1a1a;">ПР</div>
                 <div class="faction-info">
                     <div class="faction-name">Правительство</div>
-                    <div class="faction-short">Правительство • пароль: <span class="faction-pass">govfr26</span></div>
+                    <div class="faction-short">Правительство</div>
                 </div>
+                <div class="faction-check"><i class="fas fa-check-circle"></i></div>
             </div>
-            <div class="faction-item-login" data-faction="proc" style="border-color: rgba(155,89,182,0.2);">
-                <div class="faction-icon" style="background: #9b59b6;">ПК</div>
+            <div class="faction-item-login" data-faction="proc">
+                <div class="faction-icon" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">ПК</div>
                 <div class="faction-info">
                     <div class="faction-name">Прокуратура</div>
-                    <div class="faction-short">Прокуратура • пароль: <span class="faction-pass">procfr26</span></div>
+                    <div class="faction-short">Прокуратура</div>
                 </div>
+                <div class="faction-check"><i class="fas fa-check-circle"></i></div>
             </div>
-            <div class="faction-item-login" data-faction="hosp" style="border-color: rgba(26,188,156,0.2);">
-                <div class="faction-icon" style="background: #1abc9c;">МД</div>
+            <div class="faction-item-login" data-faction="hosp">
+                <div class="faction-icon" style="background: linear-gradient(135deg, #1abc9c, #16a085);">МД</div>
                 <div class="faction-info">
                     <div class="faction-name">Больница / Медицина</div>
-                    <div class="faction-short">Медицина • пароль: <span class="faction-pass">hospfr26</span></div>
+                    <div class="faction-short">Медицина</div>
                 </div>
+                <div class="faction-check"><i class="fas fa-check-circle"></i></div>
             </div>
-            <div class="faction-item-login" data-faction="law" style="border-color: rgba(230,126,34,0.2);">
-                <div class="faction-icon" style="background: #e67e22;">АД</div>
+            <div class="faction-item-login" data-faction="law">
+                <div class="faction-icon" style="background: linear-gradient(135deg, #e67e22, #d35400);">АД</div>
                 <div class="faction-info">
                     <div class="faction-name">Адвокатура</div>
-                    <div class="faction-short">Адвокатура • пароль: <span class="faction-pass">lawfr26</span></div>
+                    <div class="faction-short">Адвокатура</div>
                 </div>
+                <div class="faction-check"><i class="fas fa-check-circle"></i></div>
             </div>
-            <div class="faction-item-login" data-faction="mchs" style="border-color: rgba(243,156,18,0.2);">
-                <div class="faction-icon" style="background: #f39c12;">МЧ</div>
+            <div class="faction-item-login" data-faction="mchs">
+                <div class="faction-icon" style="background: linear-gradient(135deg, #f39c12, #e67e22);">МЧ</div>
                 <div class="faction-info">
                     <div class="faction-name">МЧС</div>
-                    <div class="faction-short">МЧС • пароль: <span class="faction-pass">mchsfr26</span></div>
+                    <div class="faction-short">МЧС</div>
                 </div>
+                <div class="faction-check"><i class="fas fa-check-circle"></i></div>
             </div>
-            <div class="faction-item-login" data-faction="fsin" style="border-color: rgba(149,165,166,0.2);">
-                <div class="faction-icon" style="background: #95a5a6;">ФС</div>
+            <div class="faction-item-login" data-faction="fsin">
+                <div class="faction-icon" style="background: linear-gradient(135deg, #95a5a6, #7f8c8d);">ФС</div>
                 <div class="faction-info">
                     <div class="faction-name">ФСИН</div>
-                    <div class="faction-short">ФСИН • пароль: <span class="faction-pass">fsinfr26</span></div>
+                    <div class="faction-short">ФСИН</div>
                 </div>
+                <div class="faction-check"><i class="fas fa-check-circle"></i></div>
             </div>
         </div>
 
-        <div style="margin-top: 16px;">
+        <div>
             <div class="field full">
                 <span class="field-label"><i class="fas fa-lock"></i> Пароль <span class="required">*</span></span>
                 <div class="password-input-group">
-                    <input type="password" id="loginPassword" class="field-control" placeholder="Введите пароль выбранной фракции" />
-                    <button class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> ВОЙТИ</button>
+                    <input type="password" id="loginPassword" class="field-control" placeholder="Введите пароль" />
+                    <button class="btn btn-login" id="loginBtn"><i class="fas fa-sign-in-alt"></i> ВОЙТИ</button>
                 </div>
                 <div id="loginMessage" class="login-message"></div>
             </div>
@@ -1548,7 +1606,7 @@
 <script>
     (function() {
         // ============================================================
-        // 1. ПАРОЛИ (новые, по типу govfr26, mvdfr26 и т.д.)
+        // 1. ПАРОЛИ
         // ============================================================
         const PASSWORDS = {
             mo: 'mofr26',
@@ -1616,13 +1674,14 @@
         let templates = [];
         let filterTemplates = 'all';
         let statsPeriod = 'week';
+        let selectedFaction = null;
 
         // ============================================================
         // 5. DOM
         // ============================================================
         const $ = id => document.getElementById(id);
         const loginCard = $('loginCard'), mainCard = $('mainCard'), previewCard = $('previewCard');
-        const loginFaction = $('loginFaction'), loginPassword = $('loginPassword'), loginBtn = $('loginBtn');
+        const loginPassword = $('loginPassword'), loginBtn = $('loginBtn');
         const loginMessage = $('loginMessage'), logoutBtn = $('logoutBtn');
         const factionBadge = $('factionBadge'), factionTag = $('factionTag');
         const currentFactionDisplay = $('currentFactionDisplay');
@@ -1735,7 +1794,6 @@
             statWeek.textContent = weekCount;
             statMonth.textContent = monthCount;
 
-            // График типов
             const typeCounts = {};
             analyticsData.forEach(d => {
                 const t = d.docType || 'Другой';
@@ -1761,7 +1819,6 @@
                 });
             }
 
-            // График по часам
             const hourCounts = Array(24).fill(0);
             analyticsData.forEach(d => {
                 const h = new Date(d.date).getHours();
@@ -1781,7 +1838,6 @@
                 hourChart.appendChild(wrap);
             });
 
-            // Таблица пользователей
             const userCounts = {};
             analyticsData.forEach(d => {
                 const u = d.user || 'Сотрудник';
@@ -2213,7 +2269,7 @@
         }
 
         // ============================================================
-        // 15. ОТПРАВКА В DISCORD с разными стилями
+        // 15. ОТПРАВКА В DISCORD
         // ============================================================
         async function sendToDiscord() {
             if(!isLoggedIn) { showToast('⚠️ Авторизуйтесь','error'); return; }
@@ -2222,18 +2278,14 @@
             if(!url || !url.trim()) { showToast('⚠️ Webhook не настроен','error'); return; }
             const doc = buildDocument();
 
-            // Разные стили сообщений для Discord
             let msg = '';
             let embedColor = parseInt(doc.factionColor.replace('#',''), 16) || 0x4ab8dc;
 
             if (currentStyle === 'classic') {
-                // Классический — строгий, с полями
                 msg = `**${doc.title}**\n\n📅 **Дата:** ${doc.date}\n🏛 **Фракция:** ${doc.faction}\n👤 **Кому:** ${doc.recipients}\n👤 **Должность:** ${doc.position}\n👤 **ФИО:** ${doc.fullName}\n\n📌 **Тема:** ${doc.subject}\n\n📝 **Текст:**\n\`\`\`\n${doc.content}\n\`\`\``;
             } else if (currentStyle === 'gradient') {
-                // Градиент — с эмодзи и форматированием
                 msg = `✨ **${doc.title}** ✨\n\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n📅 **Дата:** ${doc.date}\n🏛 **Фракция:** ${doc.faction}\n👤 **Кому:** ${doc.recipients}\n👤 **Должность:** ${doc.position}\n👤 **ФИО:** ${doc.fullName}\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n📌 **Тема:** ${doc.subject}\n\n📝 **Текст:**\n> ${doc.content.replace(/\n/g, '\n> ')}`;
             } else {
-                // Neon — яркий, с выделениями
                 msg = `⚡ **${doc.title}** ⚡\n\n\`📅 Дата:\` ${doc.date}\n\`🏛 Фракция:\` ${doc.faction}\n\`👤 Кому:\` ${doc.recipients}\n\`👤 Должность:\` ${doc.position}\n\`👤 ФИО:\` ${doc.fullName}\n\n**📌 Тема:** ${doc.subject}\n\n📝 **Текст:**\n\`\`\`ansi\n${doc.content}\n\`\`\``;
             }
 
@@ -2289,35 +2341,47 @@
         // ============================================================
         // 17. ЛОГИН / ЛОГАУТ
         // ============================================================
-        let selectedFaction = null;
-
         factionItems.forEach(item => {
             item.addEventListener('click', function() {
                 factionItems.forEach(i => i.classList.remove('selected'));
                 this.classList.add('selected');
                 selectedFaction = this.dataset.faction;
-                loginFaction.value = selectedFaction;
                 loginPassword.focus();
             });
         });
 
         function handleLogin() {
-            const faction = loginFaction.value || selectedFaction;
+            const faction = selectedFaction;
             const pass = loginPassword.value.trim();
-            if (!faction) { loginMessage.textContent = '⚠️ Выберите фракцию!'; loginMessage.className = 'login-message error'; return; }
-            if (!pass) { loginMessage.textContent = '⚠️ Введите пароль!'; loginMessage.className = 'login-message error'; return; }
+
+            if (!faction) {
+                loginMessage.textContent = '⚠️ Выберите фракцию!';
+                loginMessage.className = 'login-message error';
+                return;
+            }
+            if (!pass) {
+                loginMessage.textContent = '⚠️ Введите пароль!';
+                loginMessage.className = 'login-message error';
+                return;
+            }
+
             if (pass === PASSWORDS[faction]) {
-                loginMessage.textContent = '✅ Доступ разрешён!'; loginMessage.className = 'login-message success';
-                currentFaction = faction; isLoggedIn = true;
+                loginMessage.textContent = '✅ Доступ разрешён!';
+                loginMessage.className = 'login-message success';
+                currentFaction = faction;
+                isLoggedIn = true;
                 currentUser = prompt('Введите ваше имя (для аналитики):', 'Сотрудник') || 'Сотрудник';
-                loginCard.classList.add('hidden'); mainCard.classList.remove('hidden');
+                loginCard.classList.add('hidden');
+                mainCard.classList.remove('hidden');
                 updateUIForFaction();
                 docDate.value = getCurrentDate();
                 setTimeout(() => loginMessage.textContent = '', 1200);
-                showToast('🔓 Добро пожаловать, '+getFactionLabel(faction),'success');
+                showToast('🔓 Добро пожаловать, ' + getFactionLabel(faction), 'success');
             } else {
-                loginMessage.textContent = '❌ Неверный пароль!'; loginMessage.className = 'login-message error';
-                loginPassword.value = ''; loginPassword.focus();
+                loginMessage.textContent = '❌ Неверный пароль!';
+                loginMessage.className = 'login-message error';
+                loginPassword.value = '';
+                loginPassword.focus();
             }
         }
 
@@ -2327,6 +2391,7 @@
             mainCard.classList.add('hidden'); previewCard.classList.add('hidden'); loginCard.classList.remove('hidden');
             loginPassword.value = ''; loginMessage.textContent = '🔒 Вы вышли'; loginMessage.className = 'login-message error';
             factionItems.forEach(i => i.classList.remove('selected'));
+            selectedFaction = null;
             showToast('🔒 Выход выполнен','success');
         }
 
@@ -2357,7 +2422,7 @@
         // 20. СОБЫТИЯ
         // ============================================================
         loginBtn.addEventListener('click', handleLogin);
-        loginPassword.addEventListener('keydown', e => { if(e.key==='Enter') handleLogin(); });
+        loginPassword.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
         logoutBtn.addEventListener('click', handleLogout);
 
         recipientGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
@@ -2440,7 +2505,6 @@
         // 21. ИНИЦИАЛИЗАЦИЯ
         // ============================================================
         docDate.value = getCurrentDate();
-        // Восстановление данных
         for (const f in DEFAULT_LISTS) {
             const saved = localStorage.getItem('formyla_lists_' + f);
             if (saved) {
@@ -2448,7 +2512,7 @@
             }
         }
 
-        console.log('📄 Formyla Pro v.11');
+        console.log('📄 Formyla Pro v.12');
         console.log('🔑 Пароли:', PASSWORDS);
         console.log('⌨️ Горячие клавиши:');
         console.log('  Ctrl+Enter — публикация');
